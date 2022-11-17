@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +14,8 @@ public class Inventory : MonoBehaviour
         Card_in_Hand[0] = Card("Katana");
         Card_in_Hand[1] = Card();
         Card_in_Hand[2] = Card();
-        Active_Card= 0;
-        Card_in_Hand= Hand[Active_Card];
+        Active_Card = 0;
+        Card_in_Hand = Hand[Active_Card];
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
         Card_in_Hand = Hand[Active_Card];
         Weapon();
     }
-    void Weapon() 
+    void Weapon()
     {
         //weapontrigger
         //Card_in_Hand.Fire();
@@ -37,4 +37,3 @@ public class Inventory : MonoBehaviour
     }
 
 }
-*/

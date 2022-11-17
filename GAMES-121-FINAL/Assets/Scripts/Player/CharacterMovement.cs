@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, MovementSkill_Interface
 {
     #region Movement Variables
     [Header("Movement")]
@@ -39,8 +39,6 @@ public class CharacterMovement : MonoBehaviour
     private bool m_facingRight = true;  // For determining which way the player is currently facing.
     #endregion
 
-
-
     private void Awake()
 	{
 		m_rb = GetComponent<Rigidbody2D>();
@@ -75,7 +73,7 @@ public class CharacterMovement : MonoBehaviour
 	}
     #endregion
 
-    #region Movement Methods
+    #region Basic Movement Methods
 
     public void ExecuteBasicMove(float _move)
 	{
@@ -142,6 +140,27 @@ public class CharacterMovement : MonoBehaviour
         // Enable/Disable the collider when not crouching
         if (m_crouchDisableCollider != null) m_crouchDisableCollider.enabled = _crouch;
     }
+    #endregion
 
+    #region Movement Skills
+    public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
+    {
+        m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+    }
+
+    public void Dash()
+    {
+        //m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+    }
+
+    public void Parry()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SlowDescend()
+    {
+        throw new System.NotImplementedException();
+    }
     #endregion
 }

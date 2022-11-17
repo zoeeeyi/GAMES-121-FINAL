@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterMovement : MonoBehaviour, Skills
+public class CharacterMovement : MonoBehaviour, interface_Skills
 {
     #region Movement Variables
     [Header("Movement")]
@@ -144,37 +144,22 @@ public class CharacterMovement : MonoBehaviour, Skills
     #endregion
 
     #region Movement Skills
-    public void ExecuteSkill(Skills.SkillType _skillType)
-    {
-        switch (_skillType)
-        {
-            case Skills.SkillType.DoubleJump:
-                DoubleJump(m_doubleJumpForce, m_doubleJumpType);
-                break;
-        }
-    }
-
-    [Header("Skill Settings")]
-    [BoxGroup("Double Jump")]
-    [SerializeField] float m_doubleJumpForce;
-    [BoxGroup("Double Jump")]
-    [SerializeField] ForceMode2D m_doubleJumpType;
-    void Skills.DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
+    public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
     {
         m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
     }
 
-    void Dash()
+    public void Dash()
     {
         //m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
     }
 
-    void Parry()
+    public void Parry()
     {
         throw new System.NotImplementedException();
     }
 
-    void SlowDescend()
+    public void SlowDescend()
     {
         throw new System.NotImplementedException();
     }

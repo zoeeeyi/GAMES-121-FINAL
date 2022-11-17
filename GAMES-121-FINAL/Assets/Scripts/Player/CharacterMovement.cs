@@ -1,14 +1,16 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterController2D : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, interface_Skills
 {
     #region Movement Variables
     [Header("Movement")]
 	[SerializeField] private float m_horizontalSpeed = 400;
 	[Range(0, 1)] [SerializeField] private float m_crouchSpeedMult = .36f;
     [Range(0, 2)][SerializeField] private float m_airSpeedMult = 1;             // Amount of maxSpeed applied to crouching movement. 1 = 100%
-    [SerializeField] private float m_jumpForce = 400f;                          // Amount of force added when the player jumps.
+    [SerializeField] private float m_jumpForce = 400f; // Amount of force added when the player jumps.
+    [SerializeField] private ForceMode2D m_jumpMode = ForceMode2D.Impulse;
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothingTime = .05f;   // How much to smooth out the movement
     [SerializeField] float m_normalGrav;
     [SerializeField] float m_fallingGrav;
@@ -34,10 +36,9 @@ public class CharacterController2D : MonoBehaviour
     [Header("States")]
     private bool state_grounded; // Whether or not the player is grounded.
     private bool state_crouching;
+	private bool state_jumping = false;
     private bool m_facingRight = true;  // For determining which way the player is currently facing.
     #endregion
-
-
 
     private void Awake()
 	{
@@ -73,12 +74,12 @@ public class CharacterController2D : MonoBehaviour
 	}
     #endregion
 
-    #region Movement Methods
+    #region Basic Movement Methods
 
     public void ExecuteBasicMove(float _move)
 	{
 		//Determine Gravity Scale
-		m_rb.gravityScale = (m_rb.velocity.y > 0) ? m_normalGrav : m_fallingGrav;
+		m_rb.gravityScale = (Mathf.Approximately(m_rb.velocity.y, 0) || m_rb.velocity.y < 0) ? m_fallingGrav : m_normalGrav;
 
 		//Apply speed multiplier
 		if (state_grounded)
@@ -110,7 +111,18 @@ public class CharacterController2D : MonoBehaviour
 		if (state_grounded)
 		{
 			state_grounded = false;
-            m_rb.AddForce(new Vector2(0f, m_jumpForce));
+			state_jumping = true;
+            m_rb.AddForce(new Vector2(0f, m_jumpForce), ForceMode2D.Impulse);
+        }
+    }
+
+	public void EndJump()
+	{
+		if (state_jumping)
+		{
+			state_jumping = false;
+            //m_rb.gravityScale = m_fallingGrav;
+            m_rb.velocity = Vector3.zero;
         }
     }
 
@@ -129,6 +141,27 @@ public class CharacterController2D : MonoBehaviour
         // Enable/Disable the collider when not crouching
         if (m_crouchDisableCollider != null) m_crouchDisableCollider.enabled = _crouch;
     }
+    #endregion
 
+    #region Movement Skills
+    public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
+    {
+        m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+    }
+
+    public void Dash()
+    {
+        //m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+    }
+
+    public void Parry()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SlowDescend()
+    {
+        throw new System.NotImplementedException();
+    }
     #endregion
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController2D))]
-public class PlayerMovement : MonoBehaviour {
+[RequireComponent(typeof(CharacterMovement))]
+public class PlayerInput : MonoBehaviour {
 
-	[SerializeField] CharacterController2D m_characterController;
+	[SerializeField] CharacterMovement m_characterMovement;
 
 	float input_horizontalMove = 0f;
 
@@ -15,27 +15,32 @@ public class PlayerMovement : MonoBehaviour {
         #region Handle Jump
         if (Input.GetButtonDown("Jump"))
 		{
-			m_characterController.ExecuteJump();
+			m_characterMovement.ExecuteJump();
+		}
+
+		if (Input.GetButtonUp("Jump"))
+		{
+			m_characterMovement.EndJump();
 		}
         #endregion
 
         #region Handle Crouch
         if (Input.GetButtonDown("Crouch"))
 		{
-			m_characterController.ExecuteCrouch(true);
+			m_characterMovement.ExecuteCrouch(true);
 		}
 		else if (Input.GetButtonUp("Crouch"))
 		{
-			m_characterController.ExecuteCrouch(false);
+			m_characterMovement.ExecuteCrouch(false);
 		}
-		if (!Input.GetButton("Crouch")) m_characterController.CrouchCheck();
+		if (!Input.GetButton("Crouch")) m_characterMovement.CrouchCheck();
         #endregion
     }
 
     void FixedUpdate ()
 	{
 		#region Handle Basic Movement
-		m_characterController.ExecuteBasicMove(input_horizontalMove);
+		m_characterMovement.ExecuteBasicMove(input_horizontalMove);
         #endregion
     }
 }

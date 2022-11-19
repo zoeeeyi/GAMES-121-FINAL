@@ -9,7 +9,11 @@ public class PlayerInput : MonoBehaviour {
 
 	float input_horizontalMove = 0f;
 
+	bool m_disableInput = false;
+
 	void Update () {
+		if (m_disableInput) return;
+
 		input_horizontalMove = Input.GetAxisRaw("Horizontal");
 
         #region Handle Jump
@@ -39,8 +43,15 @@ public class PlayerInput : MonoBehaviour {
 
     void FixedUpdate ()
 	{
+		if (m_disableInput) return;
+
 		#region Handle Basic Movement
 		m_characterMovement.ExecuteBasicMove(input_horizontalMove);
         #endregion
     }
+
+	public void DisableInput(bool _disable)
+	{
+		m_disableInput = _disable;
+	}
 }

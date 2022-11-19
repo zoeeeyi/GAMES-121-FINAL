@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoubleJump : SkillParent
 {
     [SerializeField] float m_doubleJumpForce;
-    [SerializeField] ForceMode2D m_doubleJumpMode;
+    [SerializeField] ForceMode2D m_forceMode;
 
     protected override void Awake()
     {
@@ -19,6 +19,6 @@ public class DoubleJump : SkillParent
 
     protected override void ExecuteSkill()
     {
-        m_characterMovement.DoubleJump(m_doubleJumpForce, m_doubleJumpMode);
+        m_characterMovement.DoubleJump(m_doubleJumpForce, m_forceMode);
     }
 }

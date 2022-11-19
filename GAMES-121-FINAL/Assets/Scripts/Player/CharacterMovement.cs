@@ -72,6 +72,11 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    public void ChangeGravityScale(float _scale)
+    {
+        m_rb.gravityScale = _scale;
+    }
     #endregion
 
     #region Basic Movement Methods
@@ -146,12 +151,22 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     #region Movement Skills
     public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
     {
+        EndJump();
         m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
     }
 
-    public void Dash()
+    //Dash by imposing force
+    public void Dash(Vector3 _dashDir, float _dashForce, ForceMode2D _dashMode)
     {
-        //m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+        EndJump();
+        m_rb.AddForce(_dashDir * _dashForce, _dashMode);
+    }
+
+    //Dash by setting speed
+    public void Dash(Vector3 _dashDir, float _dashSpeed)
+    {
+        EndJump();
+        m_rb.velocity = _dashDir * _dashSpeed;
     }
 
     public void Parry()

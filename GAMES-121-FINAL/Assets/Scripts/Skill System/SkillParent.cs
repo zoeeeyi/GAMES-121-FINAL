@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public abstract class SkillParent : MonoBehaviour
 {
-    [SerializeField] protected CharacterMovement m_characterMovement;
+    protected CharacterMovement m_characterMovement;
 
     protected virtual void Awake()
     {

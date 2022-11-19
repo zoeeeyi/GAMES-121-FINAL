@@ -13,7 +13,7 @@ public interface interface_Skills
     }
 
     public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode);
-    public void Dash();
+    public void Dash(Vector3 _dashDir, float _dashForce, ForceMode2D _dashMode);
     public void Parry();
     public void SlowDescend();
 }

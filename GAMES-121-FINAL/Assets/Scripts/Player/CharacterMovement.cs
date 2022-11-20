@@ -11,7 +11,6 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 	[Range(0, 1)] [SerializeField] private float m_crouchSpeedMult = .36f;
     [Range(0, 2)][SerializeField] private float m_airSpeedMult = 1;
     private bool m_disableHorizontalControl = false;
-    private bool m_disableVerticalControl = false;
     //Jump
     [SerializeField] private float m_jumpForce = 400f;
     [SerializeField] private ForceMode2D m_jumpMode = ForceMode2D.Impulse;
@@ -23,6 +22,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     [SerializeField] float m_normalGrav;
     [SerializeField] float m_fallingGrav;
     [SerializeField] float m_wallGrav;
+    private bool m_disableGrav = false;
     private Vector3 m_movementSmoothV = Vector3.zero;
     #endregion
 
@@ -96,7 +96,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 
 		// Multiply the player's x local scale by -1.
 		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
+        theScale.x = m_facingRight;
 		transform.localScale = theScale;
 	}
 
@@ -104,6 +104,19 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     {
         m_rb.gravityScale = _scale;
     }
+
+    public void DisableGravity(bool _disable)
+    {
+        //Use when we want to disable gravity but remain player control
+        m_disableGrav = _disable;
+    }
+
+
+    public void DisableHorizontalControl(bool _disable)
+    {
+        m_disableHorizontalControl = _disable;
+    }
+
     #endregion
 
     #region Basic Movement Methods
@@ -111,11 +124,17 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     public void ExecuteBasicMove(float _move)
 	{
         //Determine Gravity Scale
-        if (state_onWall) m_rb.gravityScale = m_wallGrav;
-		else m_rb.gravityScale = (Mathf.Approximately(m_rb.velocity.y, 0) || m_rb.velocity.y < 0) ? m_fallingGrav : m_normalGrav;
+        if (!m_disableGrav)
+        {
+            if (state_onWall) m_rb.gravityScale = m_wallGrav;
+            else m_rb.gravityScale = (Mathf.Approximately(m_rb.velocity.y, 0) || m_rb.velocity.y < 0) ? m_fallingGrav : m_normalGrav;
+        } else
+        {
+            m_rb.gravityScale = 0;
+        }
 
-		//Apply speed multiplier
-		if (state_grounded)
+        //Apply speed multiplier
+        if (state_grounded)
 		{
 			if (state_crouching) _move *= m_crouchSpeedMult;
 		} else
@@ -152,7 +171,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         {
             state_onWall = false;
             state_wallJumping = true;
-            m_disableHorizontalControl = true;
+            DisableHorizontalControl(true);
             Vector2 _wallJumpForce = new Vector2(m_wallJumpForce.x * m_wallOutDirection, m_wallJumpForce.y);
             m_rb.AddForce(_wallJumpForce, m_wallJumpMode);
         }
@@ -169,7 +188,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         if (state_wallJumping)
         {
             state_wallJumping = false;
-            m_disableHorizontalControl = false;
+            DisableHorizontalControl(false);
             m_rb.velocity = Vector3.zero;
         }
     }
@@ -192,10 +211,18 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     #endregion
 
     #region Movement Skills
+    //Double Jump by force
     public void DoubleJump(float _jumpForce, ForceMode2D _jumpMode)
     {
         EndJump();
         m_rb.AddForce(new Vector2(0f, _jumpForce), _jumpMode);
+    }
+
+    //Double jump by speed
+    public void DoubleJump(float _jumpSpeed)
+    {
+        EndJump();
+        m_rb.velocity = new Vector2(m_rb.velocity.x, _jumpSpeed);
     }
 
     //Dash by imposing force

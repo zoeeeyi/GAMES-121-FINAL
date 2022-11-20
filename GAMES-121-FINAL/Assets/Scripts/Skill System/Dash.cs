@@ -31,7 +31,7 @@ public class Dash : SkillParent
     protected override void ExecuteSkill()
     {
         //Preparation
-        m_playerInput.DisableInput(true);
+        m_playerInput.DisableMovementInput(true);
         m_characterMovement.ChangeGravityScale(0);
         StartCoroutine(HitPause());
         StartCoroutine(DashTime());
@@ -54,6 +54,6 @@ public class Dash : SkillParent
     IEnumerator DashTime()
     {
         yield return new WaitForSeconds(m_dashTime);
-        m_playerInput.DisableInput(false);
+        m_playerInput.DisableMovementInput(false);
     }
 }

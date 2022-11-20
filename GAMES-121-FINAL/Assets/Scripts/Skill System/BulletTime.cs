@@ -6,6 +6,8 @@ public class BulletTime : SkillParent
     [SerializeField] bool m_needMouseHold = true;
     [Range(0f, 1f)]
     [SerializeField] float m_targetTimeScale;
+    float m_currentTimeScale; //use this to prevent intervention from other objects
+    
     //Interpolation
     [SerializeField] float m_speedOfChange = 2f;
     [SerializeField] float m_exponentialModifier = 10f;
@@ -29,9 +31,6 @@ public class BulletTime : SkillParent
 
     protected override void ExecuteSkill()
     {
-        Time.timeScale = m_targetTimeScale;
-        //m_characterMovement.SetBulletTimeScaleMult();
-        m_timeWeStarted = Time.time;
         StartTimeSlow();
     }
 
@@ -42,6 +41,11 @@ public class BulletTime : SkillParent
         {
             EndTimeSlow();
         }
+
+        //Set values
+        Time.timeScale = m_targetTimeScale;
+        m_currentTimeScale = m_targetTimeScale;
+        m_timeWeStarted = Time.time;
 
         //Start a new coroutine
         ie_recoverTimeScale = RecoverTimeScale();
@@ -57,12 +61,13 @@ public class BulletTime : SkillParent
 
     IEnumerator RecoverTimeScale()
     {
-        while (!Mathf.Approximately(Time.timeScale, 1) && Time.timeScale < 1)
+        while (!Mathf.Approximately(m_currentTimeScale, 1) && m_currentTimeScale < 1)
         {
             //Time will slowly recover and become faster
             float _elapsedTime = Time.time - m_timeWeStarted;
             float _stepAmount = Mathf.Pow(_elapsedTime * m_speedOfChange, m_exponentialModifier);
-            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1f, _stepAmount);
+            m_currentTimeScale = Mathf.MoveTowards(m_currentTimeScale, 1f, _stepAmount);
+            Time.timeScale = m_currentTimeScale;
             yield return null;
         }
 

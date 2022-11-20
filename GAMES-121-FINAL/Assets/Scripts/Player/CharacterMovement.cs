@@ -67,6 +67,14 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 
 	private void FixedUpdate()
 	{
+        #region Flip Player
+        if (Mathf.Abs(m_rb.velocity.x) > 0.1f && Mathf.Sign(m_rb.velocity.x) != m_facingRight)
+        {
+            Debug.Log(m_rb.velocity.x);
+            Flip();
+        }
+        #endregion
+
         #region Ground Check
         state_grounded = false;
 		Collider2D[] _groundColliders = Physics2D.OverlapCircleAll(m_groundCheckPos.position, const_groundCheckRadius, m_groundLayerMask);
@@ -93,7 +101,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
-		m_facingRight = - m_facingRight;
+		m_facingRight = (int) Mathf.Sign(m_rb.velocity.x);
 
 		// Multiply the player's x local scale by -1.
 		Vector3 theScale = transform.localScale;
@@ -152,16 +160,6 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         Vector3 targetVelocity = new Vector2(_targetHorizontalV, m_rb.velocity.y);
 		if (m_MovementSmoothingTime > 0) m_rb.velocity = m_bulletTimeScaleMult * Vector3.SmoothDamp(m_rb.velocity, targetVelocity, ref m_movementSmoothV, m_MovementSmoothingTime);
 		else m_rb.velocity = targetVelocity * m_bulletTimeScaleMult;
-
-        // If the input is moving the player right and the player is facing left...
-        if (_move > 0 && m_facingRight == -1)
-        {
-            Flip();
-        }
-        else if (_move < 0 && m_facingRight == 1)
-        {
-            Flip();
-        }
     }
 
     public void ExecuteJump()

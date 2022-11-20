@@ -24,6 +24,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     [SerializeField] float m_wallGrav;
     private bool m_disableGrav = false;
     private Vector3 m_movementSmoothV = Vector3.zero;
+    private float m_bulletTimeScaleMult = 1;
     #endregion
 
     #region Collision Variables
@@ -111,10 +112,14 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         m_disableGrav = _disable;
     }
 
-
     public void DisableHorizontalControl(bool _disable)
     {
         m_disableHorizontalControl = _disable;
+    }
+
+    public void SetBulletTimeScaleMult()
+    {
+        m_bulletTimeScaleMult = 1 / Time.timeScale;
     }
 
     #endregion
@@ -145,8 +150,8 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         // Move the character by finding the target velocity
         float _targetHorizontalV = (m_disableHorizontalControl) ? m_rb.velocity.x : _move * m_horizontalSpeed * Time.deltaTime;
         Vector3 targetVelocity = new Vector2(_targetHorizontalV, m_rb.velocity.y);
-		if (m_MovementSmoothingTime > 0) m_rb.velocity = Vector3.SmoothDamp(m_rb.velocity, targetVelocity, ref m_movementSmoothV, m_MovementSmoothingTime);
-		else m_rb.velocity = targetVelocity;
+		if (m_MovementSmoothingTime > 0) m_rb.velocity = m_bulletTimeScaleMult * Vector3.SmoothDamp(m_rb.velocity, targetVelocity, ref m_movementSmoothV, m_MovementSmoothingTime);
+		else m_rb.velocity = targetVelocity * m_bulletTimeScaleMult;
 
         // If the input is moving the player right and the player is facing left...
         if (_move > 0 && m_facingRight == -1)

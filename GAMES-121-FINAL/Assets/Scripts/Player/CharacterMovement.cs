@@ -17,6 +17,10 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     //Wall Jump
     [SerializeField] private Vector2 m_wallJumpForce = new Vector2(1, 1);
     [SerializeField] private ForceMode2D m_wallJumpMode = ForceMode2D.Impulse;
+    [SerializeField] private float m_wallJumpCoyoteTime = 0.2f;
+    [SerializeField] private float m_wallStickTime = 0.5f;
+    private float m_wallJumpCoyoteTimer = 0;
+    private float m_wallStickTimer = 0;
     //Others
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothingTime = .05f;   // How much to smooth out the movement
     [SerializeField] float m_normalGrav;
@@ -86,6 +90,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #endregion
 
         #region Wall Check
+        bool _lastState = state_onWall;
         state_onWall = false;
         Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPosRight.position, const_wallCheckRadius, m_wallLayerMask);
         if (_wallColliders.Length != 0)
@@ -94,6 +99,16 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             m_wallOutDirection = - m_facingRight;
             if ((m_rb.velocity.x == 0 || Mathf.Sign(m_rb.velocity.x) != m_wallOutDirection) && state_wallJumping) EndJump();
         }
+
+        //wall jump coyote time
+        if (_lastState && !state_onWall) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (m_wallJumpCoyoteTimer > 0) m_wallJumpCoyoteTimer -= Time.fixedDeltaTime;
+        else m_wallJumpCoyoteTimer = 0;
+
+        //Wall stick time
+        if (!_lastState && state_onWall) m_wallStickTimer = m_wallStickTime;
+        if (m_wallStickTimer > 0 && state_onWall) m_wallStickTimer -= Time.fixedDeltaTime;
+        else m_wallStickTimer = 0;
         #endregion
     }
 
@@ -139,7 +154,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         //Determine Gravity Scale
         if (!m_disableGrav)
         {
-            if (state_onWall) m_rb.gravityScale = m_wallGrav;
+            if (m_wallStickTimer > 0 && m_rb.velocity.y < 0) m_rb.gravityScale = m_wallGrav;
             else m_rb.gravityScale = (Mathf.Approximately(m_rb.velocity.y, 0) || m_rb.velocity.y < 0) ? m_fallingGrav : m_normalGrav;
         } else
         {
@@ -170,7 +185,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 			state_jumping = true;
             m_rb.AddForce(new Vector2(0f, m_jumpForce), m_jumpMode);
         } 
-        else if (state_onWall)
+        else if (state_onWall || m_wallJumpCoyoteTimer > 0)
         {
             state_onWall = false;
             state_wallJumping = true;

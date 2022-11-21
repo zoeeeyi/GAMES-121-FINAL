@@ -50,8 +50,15 @@ public class PlayerInput : MonoBehaviour {
         #endregion
     }
 
-	public void DisableMovementInput(bool _disable)
+    #region Utility Methods
+    public void DisableMovementInput(bool _disable)
 	{
 		m_disableMovementInput = _disable;
 	}
+
+	public float GetInput()
+	{
+		return input_horizontalMove;
+	}
+    #endregion
 }

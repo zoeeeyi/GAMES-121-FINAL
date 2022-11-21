@@ -6,9 +6,24 @@ using UnityEngine.Events;
 
 public abstract class RangeWeaponParent : MonoBehaviour
 {
+    #region General Variables
+    [Header("General Variabes")]
+    [SerializeField] protected string m_weaponName;
+    public string weaponName
+    {
+        get { return m_weaponName; }
+        set { m_weaponName = value; }
+    }
+    #endregion
+
     #region Bullet Settings
     [Header("Bullet Settings")]
     [SerializeField] protected int m_bulletCount;
+    public int bulletCount
+    {
+        get { return m_bulletCount; }
+        set { m_bulletCount = value; }
+    }
     [SerializeField] protected GameObject m_bullet;
     [SerializeField] protected Transform m_bulletPoint;
     #endregion
@@ -17,6 +32,8 @@ public abstract class RangeWeaponParent : MonoBehaviour
     private Camera m_mainCam;
     private Vector3 m_mousePos;
     #endregion
+
+    protected bool m_toBeDestroyed = false;
 
     protected void Awake()
     {
@@ -50,8 +67,10 @@ public abstract class RangeWeaponParent : MonoBehaviour
 
         if (Input.GetButtonDown("Fire") && m_bulletCount > 0)
         {
+            m_bulletCount--;
             Fire();
         }
     }
     protected abstract void Fire();
+    public abstract void SetToBeDestroyed();
 }

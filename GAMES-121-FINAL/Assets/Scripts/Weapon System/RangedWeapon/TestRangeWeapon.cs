@@ -15,5 +15,13 @@ public class TestRangeWeapon : RangeWeaponParent
     {
         GameObject _bullet = Instantiate(m_bullet, m_bulletPoint.position, Quaternion.identity);
         _bullet.GetComponent<Rigidbody2D>().AddForce(m_bulletForce * transform.right, ForceMode2D.Impulse);
+        if (m_toBeDestroyed) Destroy(gameObject);
     }
+
+    #region Destroy
+    public override void SetToBeDestroyed()
+    {
+        throw new System.NotImplementedException();
+    }
+    #endregion
 }

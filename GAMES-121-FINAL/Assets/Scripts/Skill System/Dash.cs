@@ -55,5 +55,13 @@ public class Dash : SkillParent
     {
         yield return new WaitForSeconds(m_dashTime);
         m_playerInput.DisableMovementInput(false);
+        if (m_toBeDestroyed) Destroy(gameObject);
     }
+
+    #region Destroy
+    public override void SetToBeDestroyed()
+    {
+        m_toBeDestroyed = true;
+    }
+    #endregion
 }

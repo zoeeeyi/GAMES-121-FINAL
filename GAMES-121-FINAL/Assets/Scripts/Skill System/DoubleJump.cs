@@ -26,15 +26,23 @@ public class DoubleJump : SkillParent
     {
         //Preparation
         m_characterMovement.DisableGravity(true);
-        StartCoroutine(DoubleJumpTime());
-
         m_characterMovement.DoubleJump(m_doubleJumpSpeed);
         //m_characterMovement.DoubleJump(m_doubleJumpForce, m_forceMode);
+
+        StartCoroutine(DoubleJumpTime());
     }
 
     IEnumerator DoubleJumpTime()
     {
         yield return new WaitForSeconds(m_doubleJumpTime);
         m_characterMovement.DisableGravity(false);
+        if (m_toBeDestroyed) Destroy(gameObject);
     }
+
+    #region Destroy
+    public override void SetToBeDestroyed()
+    {
+        m_toBeDestroyed = true;
+    }
+    #endregion
 }

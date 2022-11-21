@@ -14,7 +14,8 @@ public class PlayerInput : MonoBehaviour {
 	void Update () {
 		if (m_disableMovementInput) return;
 
-		input_horizontalMove = Input.GetAxisRaw("Horizontal");
+		float _inputX = Input.GetAxisRaw("Horizontal");
+        input_horizontalMove = (_inputX != 0) ? Mathf.Sign(_inputX) : 0;
 
         #region Handle Jump
         if (Input.GetButtonDown("Jump"))

@@ -36,13 +36,6 @@ public class DoubleJump : SkillParent
     {
         yield return new WaitForSeconds(m_doubleJumpTime);
         m_characterMovement.DisableGravity(false);
-        if (m_toBeDestroyed) Destroy(gameObject);
+        DestroyEvent();
     }
-
-    #region Destroy
-    public override void SetToBeDestroyed()
-    {
-        m_toBeDestroyed = true;
-    }
-    #endregion
 }

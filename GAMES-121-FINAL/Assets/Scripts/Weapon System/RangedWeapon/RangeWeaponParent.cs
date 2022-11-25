@@ -31,9 +31,8 @@ public abstract class RangeWeaponParent : MonoBehaviour
     #region Mouse Aimming Variables
     private Camera m_mainCam;
     private Vector3 m_mousePos;
+    public Vector2 aimDir {get; private set;}
     #endregion
-
-    protected bool m_toBeDestroyed = false;
 
     protected void Awake()
     {
@@ -45,6 +44,8 @@ public abstract class RangeWeaponParent : MonoBehaviour
         _player.weight = 1;
         GetComponent<ParentConstraint>().AddSource(_player);
         #endregion
+
+        aimDir = Vector2.zero;
     }
 
     protected virtual void Update()
@@ -52,16 +53,15 @@ public abstract class RangeWeaponParent : MonoBehaviour
         #region Aimming
         //Mouse
         m_mousePos = m_mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 _pointDir = m_mousePos - transform.position;
+        aimDir = m_mousePos - transform.position;
 
         //Joystick
         float _joystickX = Input.GetAxis("Horizontal Right Stick");
         float _joystickY = Input.GetAxis("Vertical Right Stick");
-        if (_joystickX != 0 || _joystickY != 0) _pointDir = new Vector2(_joystickX, _joystickY);
-        Debug.Log(_pointDir);
+        if (_joystickX != 0 || _joystickY != 0) aimDir = new Vector2(_joystickX, _joystickY);
 
         //Rotate
-        float _rotation = Mathf.Atan2(_pointDir.y, _pointDir.x) * Mathf.Rad2Deg;
+        float _rotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, _rotation);
         #endregion
 
@@ -72,5 +72,4 @@ public abstract class RangeWeaponParent : MonoBehaviour
         }
     }
     protected abstract void Fire();
-    public abstract void SetToBeDestroyed();
 }

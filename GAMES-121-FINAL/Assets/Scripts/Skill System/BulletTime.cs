@@ -57,7 +57,7 @@ public class BulletTime : SkillParent
         Time.timeScale = 1;
         StopCoroutine(ie_recoverTimeScale);
         ie_recoverTimeScale = null;
-        if (m_toBeDestroyed) Destroy(gameObject);
+        DestroyEvent();
     }
 
     IEnumerator RecoverTimeScale()
@@ -74,11 +74,4 @@ public class BulletTime : SkillParent
 
         EndTimeSlow();
     }
-
-    #region Destroy
-    public override void SetToBeDestroyed()
-    {
-        m_toBeDestroyed = true;
-    }
-    #endregion
 }

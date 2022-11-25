@@ -5,24 +5,33 @@ using UnityEngine.Events;
 
 public abstract class SkillParent : MonoBehaviour
 {
+    protected RangeWeaponParent m_bundledWeapon;
     protected CharacterMovement m_characterMovement;
-    protected bool m_toBeDestroyed = false;
-    protected bool m_canExecute = true;
 
     protected virtual void Awake()
     {
         m_characterMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
+        //Try to find bundled weapon
+        if (transform.parent != null) m_bundledWeapon = transform.parent.GetComponentInChildren<RangeWeaponParent>();
     }
 
     protected virtual void Update()
     {
-        if (Input.GetButtonDown("Fire") && m_canExecute)
+        if (Input.GetButtonDown("Fire"))
         {
-            if (m_toBeDestroyed) m_canExecute = false;
-            ExecuteSkill();
+            if (m_bundledWeapon?.bulletCount > 0) ExecuteSkill();
+            else ExecuteSkill();
+        }
+    }
+
+    protected virtual void DestroyEvent()
+    {
+        if (m_bundledWeapon?.bulletCount <= 0)
+        {
+            if (transform.parent != null) Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 
     protected abstract void ExecuteSkill();
-    public abstract void SetToBeDestroyed();
 }

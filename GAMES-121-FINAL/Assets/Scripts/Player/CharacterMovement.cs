@@ -74,7 +74,6 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #region Flip Player
         if (Mathf.Abs(m_rb.velocity.x) > 0.1f && Mathf.Sign(m_rb.velocity.x) != m_facingRight)
         {
-            Debug.Log(m_rb.velocity.x);
             Flip();
         }
         #endregion

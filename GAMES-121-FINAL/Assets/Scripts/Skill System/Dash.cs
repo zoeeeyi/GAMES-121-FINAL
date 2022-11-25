@@ -37,11 +37,12 @@ public class Dash : SkillParent
         StartCoroutine(DashTime());
 
         //Dash
-        Vector2 _inputDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        Vector2 _dashDir = (m_bundledWeapon != null) ? - m_bundledWeapon.aimDir.normalized
+            : new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         //by force
         //m_characterMovement.Dash(_inputDir, m_dashForce, m_dashMode);
         //by speed
-        m_characterMovement.Dash(_inputDir, m_dashSpeed);
+        m_characterMovement.Dash(_dashDir, m_dashSpeed);
     }
 
     IEnumerator HitPause()
@@ -55,13 +56,6 @@ public class Dash : SkillParent
     {
         yield return new WaitForSeconds(m_dashTime);
         m_playerInput.DisableMovementInput(false);
-        if (m_toBeDestroyed) Destroy(gameObject);
+        DestroyEvent();
     }
-
-    #region Destroy
-    public override void SetToBeDestroyed()
-    {
-        m_toBeDestroyed = true;
-    }
-    #endregion
 }

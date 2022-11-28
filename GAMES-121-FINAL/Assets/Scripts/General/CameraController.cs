@@ -76,7 +76,8 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         if (!m_cameraInitialized) { return; }
-        m_focusArea.Update(m_playerCollider.bounds);
+        if (m_playerCollider != null) m_focusArea.Update(m_playerCollider.bounds);
+        else return;
 
         #region Look Ahead Setting
         if (m_focusArea.velocity.magnitude != 0)

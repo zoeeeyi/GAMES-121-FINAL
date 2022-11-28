@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Ground
+  - Enemy Bullet
+  - Bundle
   layers:
   - Default
   - TransparentFX
@@ -11,12 +15,12 @@ TagManager:
   - Ground
   - Water
   - UI
-  - Bullet
+  - Weapon Bullet
   - Player
   - Weapon
-  - 
-  - 
-  - 
+  - Do Not Render
+  - Enemy Bullet
+  - Enemy
   - 
   - 
   - 

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletParent : MonoBehaviour
+public class EnemyHealth : HealthSystemParent
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnDeathEvent()
     {
         Destroy(gameObject);
     }

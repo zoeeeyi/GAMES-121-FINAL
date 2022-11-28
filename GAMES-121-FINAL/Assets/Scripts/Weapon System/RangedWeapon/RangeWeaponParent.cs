@@ -38,6 +38,7 @@ public abstract class RangeWeaponParent : MonoBehaviour
     {
         m_mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+        //Can't attach weapon to player directly because that will mess up aimming direction
         #region Set Parent Constraint
         ConstraintSource _player = new ConstraintSource();
         _player.sourceTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -65,11 +66,13 @@ public abstract class RangeWeaponParent : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, _rotation);
         #endregion
 
+        #region Fire Input
         if (Input.GetButtonDown("Fire") && m_bulletCount > 0)
         {
             m_bulletCount--;
             Fire();
         }
+        #endregion
     }
     protected abstract void Fire();
 }

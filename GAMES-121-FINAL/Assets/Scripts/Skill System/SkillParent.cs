@@ -29,6 +29,7 @@ public abstract class SkillParent : MonoBehaviour
         if (m_bundledWeapon?.bulletCount <= 0)
         {
             if (transform.parent != null) Destroy(transform.parent.gameObject);
+            GameObject.Find("Simple Inventory").GetComponent<SimpleInventory>().ChangeActiveBundle();
             Destroy(gameObject);
         }
     }

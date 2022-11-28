@@ -10,7 +10,7 @@ public abstract class EnemyParent : MonoBehaviour
     #endregion
 
     #region Player and Detection Variables
-    [SerializeField] protected LayerMask m_targetLayer;
+    [SerializeField] protected LayerMask m_raycastLayer;
     protected bool m_detectionActivated = false;
     protected Transform m_player;
     #endregion
@@ -36,8 +36,8 @@ public abstract class EnemyParent : MonoBehaviour
             if (m_timeBetweenRoundsTimer > 0) m_timeBetweenRoundsTimer -= Time.deltaTime;
             else
             {
-                RaycastHit2D _hit = Physics2D.Raycast(transform.position, m_player.position - transform.position, Mathf.Infinity, m_targetLayer);
-                if (_hit)
+                RaycastHit2D _hit = Physics2D.Raycast(transform.position, m_player.position - transform.position, Mathf.Infinity, m_raycastLayer);
+                if (_hit.collider.tag == "Player")
                 {
                     ExecuteAttack();
                     m_timeBetweenRoundsTimer = m_timeBetweenRounds;

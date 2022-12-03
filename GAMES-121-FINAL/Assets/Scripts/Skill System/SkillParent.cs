@@ -5,14 +5,14 @@ using UnityEngine.Events;
 
 public abstract class SkillParent : MonoBehaviour
 {
-    protected RangeWeaponParent m_bundledWeapon;
+    protected WeaponParent m_bundledWeapon;
     protected CharacterMovement m_characterMovement;
 
     protected virtual void Awake()
     {
         m_characterMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
         //Try to find bundled weapon
-        if (transform.parent != null) m_bundledWeapon = transform.parent.GetComponentInChildren<RangeWeaponParent>();
+        if (transform.parent != null) m_bundledWeapon = transform.parent.GetComponentInChildren<WeaponParent>();
     }
 
     protected virtual void Update()

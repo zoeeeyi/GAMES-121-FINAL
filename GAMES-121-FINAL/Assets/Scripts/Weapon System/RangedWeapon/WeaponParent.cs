@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Events;
 
-public abstract class RangeWeaponParent : MonoBehaviour
+public abstract class WeaponParent : MonoBehaviour
 {
     #region General Variables
     [Header("General Variabes")]

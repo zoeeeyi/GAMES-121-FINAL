@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestRangeWeapon : RangeWeaponParent
+public class Pistol : WeaponParent
 {
     [SerializeField] float m_bulletForce;
     // Update is called once per frame

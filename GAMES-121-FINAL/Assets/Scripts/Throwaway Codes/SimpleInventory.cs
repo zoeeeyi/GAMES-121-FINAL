@@ -9,9 +9,14 @@ public class SimpleInventory : MonoBehaviour
 {
     [SerializeField] List<GameObject> m_bundles;
 
+    [Header("Card System")]
+    CardSystem m_cardSystem;
+
     private void Start()
     {
         m_bundles = GameObject.FindGameObjectsWithTag("Bundle").ToList();
+
+        m_cardSystem = GameObject.FindGameObjectWithTag("Card System").GetComponent<CardSystem>();
     }
 
     public void AddToBundleList(GameObject _b)

@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Enemy Bullet
   - Bundle
+  - Card System
   layers:
   - Default
   - TransparentFX

@@ -48,6 +48,9 @@ public class Card : MonoBehaviour
         m_weaponName.text = _weapon.gameObject.name;
         m_SkillName.text = _skill.gameObject.name;
 
+        //Bind this card to the weapon
+        _weapon.card = this;
+
         //Activate this card
         m_background.SetActive(true);
         isActive = true;
@@ -96,6 +99,8 @@ public class Card : MonoBehaviour
             m_bgAnimator.SetTrigger("Deselect");
 
             //Set weapon and skill offline
+            m_bundle.GetComponentInChildren<WeaponParent>().gameObject.SetActive(false);
+            m_bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
         }
     }
     #endregion

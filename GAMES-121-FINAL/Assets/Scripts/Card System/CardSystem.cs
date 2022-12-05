@@ -26,6 +26,7 @@ public class CardSystem : MonoBehaviour
 
     //Start card
     [SerializeField] GameObject m_startBundle;
+    [SerializeField] GameObject m_testBundle;
     #endregion
 
     #region Animation Settings
@@ -66,15 +67,17 @@ public class CardSystem : MonoBehaviour
 
     private void Update()
     {
-        #region These are for testing purposes
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            AddCard(m_startBundle);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
+        #region Input
+        if (Input.GetButtonDown("Next Weapon"))
         {
             SwitchCard();
+        }
+        #endregion
+
+        #region More Inputs (These are for testing purposes)
+/*        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AddCard(m_testBundle);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -96,6 +99,7 @@ public class CardSystem : MonoBehaviour
         {
             m_cards[2].DeleteCard();
         }
+*/        
         #endregion
     }
 
@@ -103,22 +107,25 @@ public class CardSystem : MonoBehaviour
     //Notes:
     //Card Deletion is handled in each Card object by setting itself inactive
 
-    public void AddCard(GameObject _newBundle)
+    public bool AddCard(GameObject _newBundle)
     {
         //Check if slots are full. This step should be done before the method is called
-        if (m_slotUsedCount >= m_cards.Length) return;
-
-        //Create a new card at next available slot
-        m_cards[m_slotUsedCount].CreateCard(_newBundle);
+        if (m_slotUsedCount >= m_cards.Length) return false;
 
         //Instantiate gameobject
         GameObject _new = Instantiate(_newBundle, Vector2.zero, Quaternion.identity);
+
+        //Create a new card at next available slot
+        m_cards[m_slotUsedCount].CreateCard(_new);
+
         //Set it inactive if there are other cards
         if (m_slotUsedCount != m_selectedCardIndex) _new.SetActive(false);
         else m_cards[m_slotUsedCount].SelectCard(true);
 
         //Add used slot count
         m_slotUsedCount++;
+
+        return true;
     }
 
     public void SwitchCard()

@@ -91,7 +91,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         }
 
         //Ground Jump coyote time
-        if (_lastGroundedState && !state_grounded) m_jumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (_lastGroundedState && !state_grounded && !state_jumping) m_jumpCoyoteTimer = m_wallJumpCoyoteTime;
         if (m_jumpCoyoteTimer > 0) m_jumpCoyoteTimer -= Time.fixedDeltaTime;
         else m_jumpCoyoteTimer = 0;
         #endregion
@@ -108,7 +108,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         }
 
         //wall jump coyote time
-        if (_lastOnWallState && !state_onWall) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (_lastOnWallState && !state_onWall && !state_wallJumping) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
         if (m_wallJumpCoyoteTimer > 0) m_wallJumpCoyoteTimer -= Time.fixedDeltaTime;
         else m_wallJumpCoyoteTimer = 0;
 

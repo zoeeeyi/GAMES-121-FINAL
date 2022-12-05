@@ -14,6 +14,9 @@ public abstract class WeaponParent : MonoBehaviour
         get { return m_weaponName; }
         set { m_weaponName = value; }
     }
+
+    Card m_card;
+    public Card card { get { return m_card; } set { m_card = value; } }
     #endregion
 
     #region Bullet Settings
@@ -70,6 +73,7 @@ public abstract class WeaponParent : MonoBehaviour
         if (Input.GetButtonDown("Fire") && m_bulletCount > 0)
         {
             m_bulletCount--;
+            if (m_card != null) m_card.SetAmmoCount(m_bulletCount);
             Fire();
         }
         #endregion

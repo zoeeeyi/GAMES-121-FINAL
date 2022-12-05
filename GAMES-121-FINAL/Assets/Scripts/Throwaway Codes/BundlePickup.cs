@@ -11,10 +11,11 @@ public class BundlePickup : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            GameObject _newBundle = Instantiate(m_bundle, Vector2.zero, Quaternion.identity);
-            _newBundle.SetActive(false);
-            GameObject.Find("Simple Inventory").GetComponent<SimpleInventory>().AddToBundleList(_newBundle);
-            Destroy(gameObject);
+            /*            GameObject _newBundle = Instantiate(m_bundle, Vector2.zero, Quaternion.identity);
+                        _newBundle.SetActive(false);
+                        GameObject.Find("Simple Inventory")?.GetComponent<SimpleInventory>().AddToBundleList(_newBundle);
+            */
+            if (CardSystem.instance.AddCard(m_bundle)) Destroy(gameObject);
         }
     }
 }

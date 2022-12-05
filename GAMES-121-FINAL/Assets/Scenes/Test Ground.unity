@@ -2693,6 +2693,7 @@ MonoBehaviour:
   m_cardSlotImage: {fileID: 1995919613709845849, guid: 2c091865f4c2b214fbfb4e1cfda8b29e, type: 3}
   m_cardSlotHolder: {fileID: 1410920685}
   m_startBundle: {fileID: 7660125084134598335, guid: 25162a3b92050d84899ca44846239077, type: 3}
+  m_testBundle: {fileID: 6398489863439280173, guid: 4820e7154dc80e542b3e648c5c6ffca7, type: 3}
 --- !u!1 &640980402
 GameObject:
   m_ObjectHideFlags: 0

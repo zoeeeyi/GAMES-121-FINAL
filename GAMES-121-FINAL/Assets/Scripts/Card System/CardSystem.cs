@@ -70,36 +70,45 @@ public class CardSystem : MonoBehaviour
         #region Input
         if (Input.GetButtonDown("Next Weapon"))
         {
-            SwitchCard();
+            SwitchCard(-1);
+        }
+
+        if (Input.GetButtonDown("Previous Weapon"))
+        {
+            SwitchCard(-2);
         }
         #endregion
 
         #region More Inputs (These are for testing purposes)
-/*        if (Input.GetKeyDown(KeyCode.E))
-        {
-            AddCard(m_testBundle);
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCard(1);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCard(2);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCard(3);
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            m_cards[m_selectedCardIndex].DeleteCard();
-        }
+        /*        if (Input.GetKeyDown(KeyCode.E))
+                {
+                    AddCard(m_testBundle);
+                }
 
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            m_cards[0].DeleteCard();
-        }
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    m_cards[m_selectedCardIndex].DeleteCard();
+                }
 
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            m_cards[1].DeleteCard();
-        }
+                if (Input.GetKeyDown(KeyCode.F1))
+                {
+                    m_cards[0].DeleteCard();
+                }
 
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            m_cards[2].DeleteCard();
-        }
-*/        
+                if (Input.GetKeyDown(KeyCode.F2))
+                {
+                    m_cards[1].DeleteCard();
+                }
+
+                if (Input.GetKeyDown(KeyCode.F3))
+                {
+                    m_cards[2].DeleteCard();
+                }
+        */
         #endregion
     }
 
@@ -130,15 +139,36 @@ public class CardSystem : MonoBehaviour
 
     public void SwitchCard()
     {
+        if (m_selectedCardIndex > 0) SwitchCard(-2);
+        else SwitchCard(-1);
+    }
+
+    public void SwitchCard(int _index)
+    {
         //Don't do this unless we have more than 1 card
         if (m_slotUsedCount <= 1) return;
         
         //Set index to check
-        int _potentialIndex;
-        if (m_selectedCardIndex < m_slotUsedCount - 1) _potentialIndex = m_selectedCardIndex + 1;
-        else _potentialIndex = 0;
+        int _potentialIndex = new int();
+
+        //Choose specific card
+        if (_index >= 1 && _index <= m_slotUsedCount) _potentialIndex = _index - 1;
+        //Choose Next card
+        else if (_index == -1)
+        {
+            if (m_selectedCardIndex < m_slotUsedCount - 1) _potentialIndex = m_selectedCardIndex + 1;
+            else _potentialIndex = 0;
+        }
+        //Choose Previous card
+        else if (_index == -2)
+        {
+            if (m_selectedCardIndex > 0) _potentialIndex = m_selectedCardIndex - 1;
+            else _potentialIndex = m_slotUsedCount - 1;
+        }
+        else return;
 
         //Switch selected card
+        if (_potentialIndex == m_selectedCardIndex) return;
         if (m_cards[_potentialIndex].isActive)
         {
             m_cards[m_selectedCardIndex].SelectCard(false);

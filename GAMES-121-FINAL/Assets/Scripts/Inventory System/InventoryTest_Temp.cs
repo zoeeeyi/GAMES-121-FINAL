@@ -10,7 +10,7 @@ public class InventoryTest_Temp : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_weaponName;
     [SerializeField] TextMeshProUGUI m_bulletCount;
     int m_currentIndex = 0;
-    RangeWeaponParent m_currentWeapon;
+    WeaponParent m_currentWeapon;
 
     private void Start()
     {
@@ -22,7 +22,7 @@ public class InventoryTest_Temp : MonoBehaviour
             }
         }
         m_currentIndex = 0;
-        m_currentWeapon = combos[0].GetComponentInChildren<RangeWeaponParent>();
+        m_currentWeapon = combos[0].GetComponentInChildren<WeaponParent>();
         UpdateWeaponNameUI();
     }
 
@@ -54,7 +54,7 @@ public class InventoryTest_Temp : MonoBehaviour
     {
         combos[m_currentIndex].gameObject.SetActive(false);
         m_currentIndex = (m_currentIndex + 1 < combos.Count) ? m_currentIndex + 1 : 0;
-        m_currentWeapon = combos[m_currentIndex].GetComponentInChildren<RangeWeaponParent>();
+        m_currentWeapon = combos[m_currentIndex].GetComponentInChildren<WeaponParent>();
         UpdateWeaponNameUI();
         combos[m_currentIndex].gameObject.SetActive(true);
     }

@@ -14,6 +14,8 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     //Jump
     [SerializeField] private float m_jumpForce = 400f;
     [SerializeField] private ForceMode2D m_jumpMode = ForceMode2D.Impulse;
+    [SerializeField] private float m_jumpCoyoteTime = 0.2f;
+    private float m_jumpCoyoteTimer = 0;
     //Wall Jump
     [SerializeField] private Vector2 m_wallJumpForce = new Vector2(1, 1);
     [SerializeField] private ForceMode2D m_wallJumpMode = ForceMode2D.Impulse;
@@ -79,6 +81,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #endregion
 
         #region Ground Check
+        bool _lastGroundedState = state_grounded;
         state_grounded = false;
 		Collider2D[] _groundColliders = Physics2D.OverlapCircleAll(m_groundCheckPos.position, const_groundCheckRadius, m_groundLayerMask);
         if (_groundColliders.Length != 0)
@@ -86,10 +89,15 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             state_grounded = true;
             if (m_rb.velocity.y <= 0) EndJump();
         }
+
+        //Ground Jump coyote time
+        if (_lastGroundedState && !state_grounded && !state_jumping) m_jumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (m_jumpCoyoteTimer > 0) m_jumpCoyoteTimer -= Time.fixedDeltaTime;
+        else m_jumpCoyoteTimer = 0;
         #endregion
 
         #region Wall Check
-        bool _lastState = state_onWall;
+        bool _lastOnWallState = state_onWall;
         state_onWall = false;
         Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPosRight.position, const_wallCheckRadius, m_wallLayerMask);
         if (_wallColliders.Length != 0)
@@ -100,12 +108,12 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         }
 
         //wall jump coyote time
-        if (_lastState && !state_onWall) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (_lastOnWallState && !state_onWall && !state_wallJumping) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
         if (m_wallJumpCoyoteTimer > 0) m_wallJumpCoyoteTimer -= Time.fixedDeltaTime;
         else m_wallJumpCoyoteTimer = 0;
 
         //Wall stick time
-        if (!_lastState && state_onWall) m_wallStickTimer = m_wallStickTime;
+        if (!_lastOnWallState && state_onWall) m_wallStickTimer = m_wallStickTime;
         if (m_wallStickTimer > 0 && state_onWall) m_wallStickTimer -= Time.fixedDeltaTime;
         else m_wallStickTimer = 0;
         #endregion
@@ -117,11 +125,16 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		// Switch the way the player is labelled as facing.
 		m_facingRight = (int) Mathf.Sign(m_rb.velocity.x);
 
-		// Multiply the player's x local scale by -1.
-		Vector3 theScale = transform.localScale;
+        // Change by rotation
+        Vector3 _newRotation = transform.localRotation.eulerAngles;
+        _newRotation.y = (m_facingRight == 1) ? 0 : 180;
+        transform.localRotation = Quaternion.Euler(_newRotation);
+
+/*        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
         theScale.x = m_facingRight;
-		transform.localScale = theScale;
-	}
+        transform.localScale = theScale;
+*/    }
 
     public void ChangeGravityScale(float _scale)
     {
@@ -178,12 +191,12 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 
     public void ExecuteJump()
 	{
-		if (state_grounded)
+		if (state_grounded || (m_jumpCoyoteTimer > 0 && !state_onWall))
 		{
 			state_grounded = false;
 			state_jumping = true;
             m_rb.AddForce(new Vector2(0f, m_jumpForce), m_jumpMode);
-        } 
+        }
         else if (state_onWall || m_wallJumpCoyoteTimer > 0)
         {
             state_onWall = false;
@@ -192,6 +205,10 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             Vector2 _wallJumpForce = new Vector2(m_wallJumpForce.x * m_wallOutDirection, m_wallJumpForce.y);
             m_rb.AddForce(_wallJumpForce, m_wallJumpMode);
         }
+
+        //Reset coyote times
+        m_jumpCoyoteTimer = 0;
+        m_wallJumpCoyoteTimer = 0;
     }
 
 	public void EndJump()

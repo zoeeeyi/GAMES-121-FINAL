@@ -56,6 +56,8 @@ public class Dash : SkillParent
     {
         yield return new WaitForSeconds(m_dashTime);
         m_playerInput.DisableMovementInput(false);
-        DestroyEvent();
+
+        //Finish Loop
+        FinishEventLoop();
     }
 }

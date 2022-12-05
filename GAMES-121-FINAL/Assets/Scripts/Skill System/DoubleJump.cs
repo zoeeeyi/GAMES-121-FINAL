@@ -36,6 +36,8 @@ public class DoubleJump : SkillParent
     {
         yield return new WaitForSeconds(m_doubleJumpTime);
         m_characterMovement.DisableGravity(false);
-        DestroyEvent();
+
+        //Finish Loop
+        FinishEventLoop();
     }
 }

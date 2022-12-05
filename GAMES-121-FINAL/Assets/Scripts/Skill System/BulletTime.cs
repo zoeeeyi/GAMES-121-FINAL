@@ -57,7 +57,9 @@ public class BulletTime : SkillParent
         Time.timeScale = 1;
         StopCoroutine(ie_recoverTimeScale);
         ie_recoverTimeScale = null;
-        DestroyEvent();
+
+        //Finish Loop
+        FinishEventLoop();
     }
 
     IEnumerator RecoverTimeScale()

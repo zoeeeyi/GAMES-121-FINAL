@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 5658837312686224385}
   - component: {fileID: 5658837312686224390}
   - component: {fileID: 5658837312686224388}
+  - component: {fileID: 7044294468968708316}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -370,6 +371,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &7044294468968708316
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5658837312686224394}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5658837313017129783
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1ca054cad546b4b8e9784548be101e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   m_background: {fileID: 5658837312686224394}
   m_ammoCount: {fileID: 5658837311988675556}
   m_weaponName: {fileID: 5658837311728060445}

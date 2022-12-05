@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class Card : MonoBehaviour
 {
-    public bool isActive = false;
+    [HideInInspector] public bool isActive = false;
 
     [Header("Card Design")]
     [SerializeField] GameObject m_background;
@@ -27,12 +27,21 @@ public class Card : MonoBehaviour
         m_background.SetActive(false);
     }
 
+    #region Utility Methods
+    void ResetAnimator()
+    {
+        //Reset animator trigger
+        m_bgAnimator.ResetTrigger("Select");
+        m_bgAnimator.ResetTrigger("Deselect");
+    }
+
+    #endregion
+
     #region Creation, Deletion, Selection
     public void CreateCard(GameObject _newBundle)
     {
+        //Update card info
         m_bundle = _newBundle;
-
-        //Update display info
         WeaponParent _weapon = _newBundle.GetComponentInChildren<WeaponParent>();
         SkillParent _skill = _newBundle.GetComponentInChildren<SkillParent>();
         m_ammoCount.text =  _weapon.bulletCount.ToString();
@@ -42,22 +51,52 @@ public class Card : MonoBehaviour
         //Activate this card
         m_background.SetActive(true);
         isActive = true;
+
+        //Trigger Animation
+        m_bgAnimator.SetTrigger("Add Card");
     }
 
     public void DeleteCard()
     {
+        //Check if slots are empty. This step should be done before the method is called
+        if (CardSystem.instance.slotUsedCount <= 0) return;
+
+        //De-activate the card
         m_background.SetActive(false);
+        m_background.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         isActive = false;
 
         //Update card system
-        CardSystem.SlotUsedCount--;
-        CardSystem.UpdateCardPosition();
+        CardSystem.instance.SwitchCard();
+        CardSystem.instance.slotUsedCount--;
+        CardSystem.instance.UpdateCardPosition();
+
+        //Reset animator
+        //ResetAnimator();
     }
 
     public void SelectCard(bool _b)
     {
-        if (_b) m_bgAnimator.SetTrigger("Select");
-        else m_bgAnimator.SetTrigger("Deselect");
+        if (_b)
+        {
+            m_bgAnimator.SetTrigger("Select");
+
+            //Set the bundle back online
+            if (m_bundle != null)
+            {
+                m_bundle.SetActive(true);
+                foreach (Transform _child in m_bundle.transform)
+                {
+                    _child.gameObject.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            m_bgAnimator.SetTrigger("Deselect");
+
+            //Set weapon and skill offline
+        }
     }
     #endregion
 

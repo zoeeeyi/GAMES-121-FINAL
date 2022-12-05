@@ -2953,8 +2953,7 @@ MonoBehaviour:
   m_wallLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  m_wallCheckPosLeft: {fileID: 0}
-  m_wallCheckPosRight: {fileID: 1639431199}
+  m_wallCheckPos: {fileID: 1639431199}
   m_ceilingCheckPos: {fileID: 805646939}
   m_crouchDisableCollider: {fileID: 0}
 --- !u!50 &704103786

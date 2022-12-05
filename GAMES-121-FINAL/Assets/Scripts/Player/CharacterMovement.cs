@@ -41,8 +41,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     const float const_groundCheckRadius = .2f;
     //Wall
     [SerializeField] private LayerMask m_wallLayerMask;
-    [SerializeField] private Transform m_wallCheckPosLeft;
-    [SerializeField] private Transform m_wallCheckPosRight;
+    [SerializeField] private Transform m_wallCheckPos;
     int m_wallOutDirection;
     const float const_wallCheckRadius = .2f;
     //Ceiling
@@ -99,7 +98,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #region Wall Check
         bool _lastOnWallState = state_onWall;
         state_onWall = false;
-        Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPosRight.position, const_wallCheckRadius, m_wallLayerMask);
+        Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPos.position, const_wallCheckRadius, m_wallLayerMask);
         if (_wallColliders.Length != 0)
         {
             state_onWall = true;

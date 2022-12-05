@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
 {
     public bool isActive = false;
 
+    [Header("Card Design")]
     [SerializeField] GameObject m_background;
     Animator m_bgAnimator;
 
@@ -15,6 +16,7 @@ public class Card : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_ammoCount;
     [SerializeField] TextMeshProUGUI m_weaponName;
     [SerializeField] TextMeshProUGUI m_SkillName;
+    GameObject m_bundle;
 
     private void Awake()
     {
@@ -26,13 +28,18 @@ public class Card : MonoBehaviour
     }
 
     #region Creation, Deletion, Selection
-    public void CreateCard(int _ammoCount, string _weaponName, string _skillName)
+    public void CreateCard(GameObject _newBundle)
     {
-        //Update display info
-        m_ammoCount.text = _ammoCount.ToString();
-        m_weaponName.text = _weaponName;
-        m_SkillName.text = _skillName;
+        m_bundle = _newBundle;
 
+        //Update display info
+        WeaponParent _weapon = _newBundle.GetComponentInChildren<WeaponParent>();
+        SkillParent _skill = _newBundle.GetComponentInChildren<SkillParent>();
+        m_ammoCount.text =  _weapon.bulletCount.ToString();
+        m_weaponName.text = _weapon.gameObject.name;
+        m_SkillName.text = _skill.gameObject.name;
+
+        //Activate this card
         m_background.SetActive(true);
         isActive = true;
     }
@@ -41,9 +48,13 @@ public class Card : MonoBehaviour
     {
         m_background.SetActive(false);
         isActive = false;
+
+        //Update card system
+        CardSystem.SlotUsedCount--;
+        CardSystem.UpdateCardPosition();
     }
 
-    public void SetCardHighlighted(bool _b)
+    public void SelectCard(bool _b)
     {
         if (_b) m_bgAnimator.SetTrigger("Select");
         else m_bgAnimator.SetTrigger("Deselect");
@@ -53,7 +64,9 @@ public class Card : MonoBehaviour
     #region Update Display Infomation
     public void SetAmmoCount(int _c)
     {
-        m_ammoCount.text = _c.ToString();
+        //If ammo is used up, we delete this card
+        if (_c <= 0) DeleteCard();
+        else m_ammoCount.text = _c.ToString();
     }
 
     public void SetWeaponName(string _s)

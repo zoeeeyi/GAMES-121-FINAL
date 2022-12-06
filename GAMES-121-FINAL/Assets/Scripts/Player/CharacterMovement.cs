@@ -38,16 +38,16 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     //Ground
 	[SerializeField] private LayerMask m_groundLayerMask;
 	[SerializeField] private Transform m_groundCheckPos;
-    const float const_groundCheckRadius = .2f;
+    [SerializeField] float m_groundCheckRadius = .2f;
     //Wall
     [SerializeField] private LayerMask m_wallLayerMask;
     [SerializeField] private Transform m_wallCheckPos;
     int m_wallOutDirection;
-    const float const_wallCheckRadius = .2f;
+    [SerializeField] float m_wallCheckRadius = .2f;
     //Ceiling
     [SerializeField] private Transform m_ceilingCheckPos;							// A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_crouchDisableCollider;				// A collider that will be disabled when crouching
-    const float const_ceilingCheckRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
+    [SerializeField] float m_ceilingCheckRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
     #endregion
 
     #region Components Variables
@@ -82,7 +82,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #region Ground Check
         bool _lastGroundedState = state_grounded;
         state_grounded = false;
-		Collider2D[] _groundColliders = Physics2D.OverlapCircleAll(m_groundCheckPos.position, const_groundCheckRadius, m_groundLayerMask);
+		Collider2D[] _groundColliders = Physics2D.OverlapCircleAll(m_groundCheckPos.position, m_groundCheckRadius, m_groundLayerMask);
         if (_groundColliders.Length != 0)
         {
             state_grounded = true;
@@ -98,7 +98,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         #region Wall Check
         bool _lastOnWallState = state_onWall;
         state_onWall = false;
-        Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPos.position, const_wallCheckRadius, m_wallLayerMask);
+        Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPos.position, m_wallCheckRadius, m_wallLayerMask);
         if (_wallColliders.Length != 0)
         {
             state_onWall = true;
@@ -231,7 +231,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		//if the player is crouching but there's no ceiling detected, we finish crouching
 		if (state_crouching)
 		{
-			if (!Physics2D.OverlapCircle(m_ceilingCheckPos.position, const_ceilingCheckRadius, m_groundLayerMask)) ExecuteCrouch(false);
+			if (!Physics2D.OverlapCircle(m_ceilingCheckPos.position, m_ceilingCheckRadius, m_groundLayerMask)) ExecuteCrouch(false);
 		}
 	}
 

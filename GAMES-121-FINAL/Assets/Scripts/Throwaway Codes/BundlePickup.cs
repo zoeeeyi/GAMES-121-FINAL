@@ -15,7 +15,10 @@ public class BundlePickup : MonoBehaviour
                         _newBundle.SetActive(false);
                         GameObject.Find("Simple Inventory")?.GetComponent<SimpleInventory>().AddToBundleList(_newBundle);
             */
-            if (CardSystem.instance.AddCard(m_bundle)) Destroy(gameObject);
+            if (CardSystem.instance != null)
+            {
+                if (CardSystem.instance.AddCard(m_bundle)) Destroy(gameObject);
+            }
         }
     }
 }

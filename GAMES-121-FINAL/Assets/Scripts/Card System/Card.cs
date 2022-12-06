@@ -99,8 +99,13 @@ public class Card : MonoBehaviour
             m_bgAnimator.SetTrigger("Deselect");
 
             //Set weapon and skill offline
-            m_bundle.GetComponentInChildren<WeaponParent>().gameObject.SetActive(false);
-            m_bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
+            WeaponParent _weapon = m_bundle.GetComponentInChildren<WeaponParent>();
+            if (_weapon?.bulletCount > 0)
+            {
+                //If this condition doesn't meet
+                _weapon.gameObject.SetActive(false);
+                m_bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
+            }
         }
     }
     #endregion

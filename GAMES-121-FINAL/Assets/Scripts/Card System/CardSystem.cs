@@ -84,31 +84,31 @@ public class CardSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCard(2);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCard(3);
 
-        /*        if (Input.GetKeyDown(KeyCode.E))
-                {
-                    AddCard(m_testBundle);
-                }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            AddCard(m_testBundle);
+        }
 
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    m_cards[m_selectedCardIndex].DeleteCard();
-                }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            m_cards[m_selectedCardIndex].DeleteCard();
+        }
 
-                if (Input.GetKeyDown(KeyCode.F1))
-                {
-                    m_cards[0].DeleteCard();
-                }
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            m_cards[0].DeleteCard();
+        }
 
-                if (Input.GetKeyDown(KeyCode.F2))
-                {
-                    m_cards[1].DeleteCard();
-                }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            m_cards[1].DeleteCard();
+        }
 
-                if (Input.GetKeyDown(KeyCode.F3))
-                {
-                    m_cards[2].DeleteCard();
-                }
-        */
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            m_cards[2].DeleteCard();
+        }
+
         #endregion
     }
 

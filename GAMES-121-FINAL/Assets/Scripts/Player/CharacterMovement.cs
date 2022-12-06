@@ -90,7 +90,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         }
 
         //Ground Jump coyote time
-        if (_lastGroundedState && !state_grounded && !state_jumping) m_jumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (_lastGroundedState && !state_grounded && !state_jumping) m_jumpCoyoteTimer = m_jumpCoyoteTime;
         if (m_jumpCoyoteTimer > 0) m_jumpCoyoteTimer -= Time.fixedDeltaTime;
         else m_jumpCoyoteTimer = 0;
         #endregion

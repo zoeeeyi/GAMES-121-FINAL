@@ -100,10 +100,10 @@ public class Card : MonoBehaviour
 
             //Set weapon and skill offline
             WeaponParent _weapon = m_bundle.GetComponentInChildren<WeaponParent>();
+            _weapon.gameObject.SetActive(false);
             if (_weapon?.bulletCount > 0)
             {
-                //If this condition doesn't meet
-                _weapon.gameObject.SetActive(false);
+                //If bullet count is 0, the skill will destroy itself when it's completed
                 m_bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
             }
         }

@@ -85,6 +85,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		Collider2D[] _groundColliders = Physics2D.OverlapCircleAll(m_groundCheckPos.position, m_groundCheckRadius, m_groundLayerMask);
         if (_groundColliders.Length != 0)
         {
+            //if (!_lastGroundedState) PlayerAnimation.instance.Ground();
             state_grounded = true;
             if (m_rb.velocity.y <= 0) EndJump();
         }
@@ -101,6 +102,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         Collider2D[] _wallColliders = Physics2D.OverlapCircleAll(m_wallCheckPos.position, m_wallCheckRadius, m_wallLayerMask);
         if (_wallColliders.Length != 0)
         {
+            //if (!_lastOnWallState) PlayerAnimation.instance.Ground();
             state_onWall = true;
             m_wallOutDirection = - m_facingRight;
             if ((m_rb.velocity.x == 0 || Mathf.Sign(m_rb.velocity.x) != m_wallOutDirection) && state_wallJumping) EndJump();
@@ -115,6 +117,10 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         if (!_lastOnWallState && state_onWall) m_wallStickTimer = m_wallStickTime;
         if (m_wallStickTimer > 0 && state_onWall) m_wallStickTimer -= Time.fixedDeltaTime;
         else m_wallStickTimer = 0;
+        #endregion
+
+        #region Set animation based on check results
+        PlayerAnimation.instance.Ground(state_grounded);
         #endregion
     }
 
@@ -154,6 +160,12 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     public void SetBulletTimeScaleMult()
     {
         m_bulletTimeScaleMult = 1 / Time.timeScale;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (m_groundCheckPos != null) Gizmos.DrawWireSphere(m_groundCheckPos.position, m_groundCheckRadius);
+        if (m_wallCheckPos != null) Gizmos.DrawWireSphere(m_wallCheckPos.position, m_wallCheckRadius);
     }
 
     #endregion

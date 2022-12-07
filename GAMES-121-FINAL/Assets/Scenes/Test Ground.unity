@@ -277,7 +277,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7553707443868778144, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_Name
-      value: Test Enemy (3)
+      value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778146, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_raycastLayer.m_Bits
@@ -289,11 +289,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.2
+      value: 5.76
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.92
+      value: 2.49
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2570,7 +2570,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7553707443868778144, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_Name
-      value: Test Enemy (1)
+      value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778146, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_raycastLayer.m_Bits
@@ -2582,11 +2582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.97
+      value: 13.04
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.07
+      value: -5.53
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3014,7 +3014,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1649484999, guid: 813f3fbece339ce4a96f1a5f9f4a9907, type: 3}
+  m_Sprite: {fileID: -204231138, guid: a9594db4c2cd95246af74a12ed841f03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4054,7 +4054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7553707443868778144, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_Name
-      value: Test Enemy (2)
+      value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778146, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_raycastLayer.m_Bits
@@ -4070,7 +4070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.75
+      value: 3.55
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4078,19 +4078,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4102,7 +4102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778172, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_IsTrigger
@@ -4555,11 +4555,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7553707443868778144, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_Name
-      value: Test Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 7553707443868778146, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_raycastLayer.m_Bits
-      value: 136
+      value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_RootOrder
@@ -4567,11 +4563,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.2
+      value: 6.13
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.01
+      value: -2.51
       objectReference: {fileID: 0}
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4604,26 +4600,6 @@ PrefabInstance:
     - target: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7553707443868778172, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7553707443868778175, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_bundleDrop
-      value: 
-      objectReference: {fileID: 5138350838181811128, guid: d0f5f50f7aeb08c46981b4884dbdeaef, type: 3}
-    - target: {fileID: 7553707445278155896, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 6.970198
-      objectReference: {fileID: 0}
-    - target: {fileID: 7553707445278155896, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 6.970198
-      objectReference: {fileID: 0}
-    - target: {fileID: 7553707445278155896, guid: e415c04579f67054285de248436e7ec8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 6.970198
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e415c04579f67054285de248436e7ec8, type: 3}

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -9,11 +10,13 @@ public class CameraController : MonoBehaviour
     [SerializeField] float m_cameraSizeSmoothTime = 0.5f;
     [SerializeField] float m_cameraSizeMult = 0.5f;
     [SerializeField] float m_cameraMaxSize = 20;
+    bool m_cameraInitialized = false;
     float m_cameraStartSize;
     float m_cameraTargetSize; //Should be used according to speed
     float m_cameraSizeSmoothV = 0;
     Camera m_camera;
     GameManager m_gameManager;
+    public static CameraController instance;
     #endregion
 
     #region Player Settings
@@ -52,7 +55,16 @@ public class CameraController : MonoBehaviour
     bool m_lookAheadStopped = true;
     #endregion
 
-    bool m_cameraInitialized = false;
+    #region Camera Shake Setting
+    [Header("Camera Shake Setting")]
+    [SerializeField] float m_shakeDuration = 1;
+    [SerializeField] AnimationCurve m_strengthCurve;
+    #endregion
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -140,6 +152,23 @@ public class CameraController : MonoBehaviour
         else m_camera.fieldOfView = Mathf.SmoothDamp(m_camera.fieldOfView, m_cameraTargetSize, ref m_cameraSizeSmoothV, m_cameraSizeSmoothTime);
         #endregion
     }
+
+    public IEnumerator CameraShake()
+    {
+        //Vector2 _startPos = transform.position;
+        float _timer = 0;
+
+        while (_timer < m_shakeDuration)
+        {
+            _timer += Time.deltaTime;
+            float _strength = m_strengthCurve.Evaluate(_timer / m_shakeDuration);
+            transform.position += (Vector3) Random.insideUnitCircle * _strength;
+            yield return null;
+        }
+
+        //transform.position = _startPos;
+    }
+
 
     void OnDrawGizmos()
     {

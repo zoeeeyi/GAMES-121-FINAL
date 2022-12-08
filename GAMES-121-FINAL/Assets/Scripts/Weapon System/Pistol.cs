@@ -13,7 +13,7 @@ public class Pistol : WeaponParent
 
     protected override void Fire()
     {
-        GameObject _bullet = Instantiate(m_bullet, m_bulletPoint.position, Quaternion.identity);
+        GameObject _bullet = Instantiate(m_bullet, m_bulletPoint.position, transform.rotation);
         _bullet.GetComponent<Rigidbody2D>().AddForce(m_bulletForce * transform.right, ForceMode2D.Impulse);
     }
 }

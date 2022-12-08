@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyDetectRange : MonoBehaviour
 {
-    private TestEnemy m_enemyParent;
+    private Turret m_enemyParent;
     // Start is called before the first frame update
     void Start()
     {
-        m_enemyParent = GetComponentInParent<TestEnemy>();
+        m_enemyParent = GetComponentInParent<Turret>();
     }
 
     #region Player in and out of the range

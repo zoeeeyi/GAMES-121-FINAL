@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_Sprite: {fileID: -1044953883, guid: e9367af0fae86cd4c8710f271fa6b719, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -131,7 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42d559459b15d044ae7b5928e8da731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targetTag: Enemy
+  m_targetTag:
+  - Enemy
+  - Enemy Bullet
   m_hitParticle: {fileID: 2293327769136361479, guid: acc561d2eef3e024f8b41454b7e6d526, type: 3}
 --- !u!50 &-1686384059636569911
 Rigidbody2D:
@@ -169,4 +171,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.83

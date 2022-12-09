@@ -37,10 +37,13 @@ public abstract class WeaponParent : MonoBehaviour
     public Vector2 aimDir {get; private set;}
     #endregion
 
+    #region Animation
+    [SerializeField] protected SpriteRenderer m_weaponSprite;
+    protected Animator m_animator;
+    #endregion
+
     protected void Awake()
     {
-        m_mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-
         //Can't attach weapon to player directly because that will mess up aimming direction
         #region Set Parent Constraint
         ConstraintSource _player = new ConstraintSource();
@@ -48,8 +51,18 @@ public abstract class WeaponParent : MonoBehaviour
         _player.weight = 1;
         GetComponent<ParentConstraint>().AddSource(_player);
         #endregion
+    }
 
+    protected void Start()
+    {
+        #region Fetch Components
+        m_mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        m_animator = GetComponent<Animator>();
+        #endregion
+
+        #region Set Values
         aimDir = Vector2.zero;
+        #endregion
     }
 
     protected virtual void Update()
@@ -65,8 +78,9 @@ public abstract class WeaponParent : MonoBehaviour
         if (_joystickX != 0 || _joystickY != 0) aimDir = new Vector2(_joystickX, _joystickY);
 
         //Rotate
+        m_weaponSprite.flipY = (aimDir.x < 0);
         float _rotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, _rotation);
+        m_weaponSprite.transform.rotation = Quaternion.Euler(0, 0, _rotation);
         #endregion
 
         #region Fire Input

@@ -14,6 +14,7 @@ public abstract class HealthSystemParent : MonoBehaviour
 
     public virtual void TakeDamage()
     {
+        if (m_currentHealth <= 0) return;
         m_currentHealth--;
         if (m_currentHealth <= 0) PreDeathEvent();
     }

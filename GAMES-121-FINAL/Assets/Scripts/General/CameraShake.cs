@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-    [SerializeField] float m_shakeDuration = 1;
+    [SerializeField] float m_shakeDuration;
     [SerializeField] AnimationCurve m_strengthCurve;
 
     IEnumerator Shake()
@@ -16,7 +16,8 @@ public class CameraShake : MonoBehaviour
         {
             _timer += Time.deltaTime;
             float _strength = m_strengthCurve.Evaluate(_timer / m_shakeDuration);
-            transform.position = _startPos + Random.insideUnitCircle * _strength;
+            Debug.Log(_strength);
+            transform.position = (Vector2) transform.position + Random.insideUnitCircle * _strength;
             yield return null;
         }
 

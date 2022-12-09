@@ -31,6 +31,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     private bool m_disableGrav = false;
     private Vector3 m_movementSmoothV = Vector3.zero;
     private float m_bulletTimeScaleMult = 1;
+    MovementRecorder m_wallMovementRecorder;
     #endregion
 
     #region Collision Variables
@@ -106,14 +107,19 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             state_onWall = true;
             m_wallOutDirection = - m_facingRight;
             if ((m_rb.velocity.x == 0 || Mathf.Sign(m_rb.velocity.x) != m_wallOutDirection) && state_wallJumping) EndJump();
+            RecordMovementData(ref m_wallMovementRecorder);
         }
 
         //wall jump coyote time
-        if (_lastOnWallState && !state_onWall && !state_wallJumping) m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
+        if (_lastOnWallState && !state_onWall && !state_wallJumping)
+        {
+            m_wallJumpCoyoteTimer = m_wallJumpCoyoteTime;
+        }
         if (m_wallJumpCoyoteTimer > 0) m_wallJumpCoyoteTimer -= Time.fixedDeltaTime;
         else m_wallJumpCoyoteTimer = 0;
 
         //Wall stick time
+        if (!state_onWall) m_wallStickTimer = 0;
         if (!_lastOnWallState && state_onWall) m_wallStickTimer = m_wallStickTime;
         if (m_wallStickTimer > 0 && state_onWall) m_wallStickTimer -= Time.fixedDeltaTime;
         else m_wallStickTimer = 0;
@@ -123,6 +129,41 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         PlayerAnimation.instance.Ground(state_grounded);
         #endregion
     }
+
+    #region Movement Recorder
+    struct MovementRecorder
+    {
+        public Vector2 st_position { get; private set; }
+        public Vector2 st_velocity { get; private set; }
+        public float st_gravScale { get; private set; }
+
+/*        public MovementRecorder(Vector2 _pos, Vector2 _v, float _grav)
+        {
+            st_position = _pos;
+            st_velocity = _v;
+            st_gravScale = _grav;
+        }
+*/
+        public void UpdateData(Vector2 _pos, Vector2 _v, float _grav)
+        {
+            st_position = _pos;
+            st_velocity = _v;
+            st_gravScale = _grav;
+        }
+    }
+
+    void RecordMovementData(ref MovementRecorder _mr)
+    {
+        _mr.UpdateData(transform.position, m_rb.velocity, m_rb.gravityScale);
+    }
+
+    void ExtractMovementData(MovementRecorder _mr)
+    {
+        transform.position = _mr.st_position;
+        m_rb.velocity = _mr.st_velocity;
+        m_rb.gravityScale = _mr.st_gravScale;
+    }
+    #endregion
 
     #region Utility Methods
     private void Flip()
@@ -214,6 +255,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             state_wallJumping = true;
             DisableHorizontalControl(true);
             Vector2 _wallJumpForce = new Vector2(m_wallJumpForce.x * m_wallOutDirection, m_wallJumpForce.y);
+            ExtractMovementData(m_wallMovementRecorder);
             m_rb.AddForce(_wallJumpForce, m_wallJumpMode);
         }
 

@@ -134,7 +134,8 @@ MonoBehaviour:
   m_targetTag:
   - Enemy
   - Enemy Bullet
-  m_hitParticle: {fileID: 2293327769136361479, guid: acc561d2eef3e024f8b41454b7e6d526, type: 3}
+  m_hitTargetParticle: {fileID: 2293327769136361479, guid: acc561d2eef3e024f8b41454b7e6d526, type: 3}
+  m_otherHitParticle: {fileID: 2293327769136361479, guid: 4bc81dd35b0ec6340ac4f979b6aaf2bb, type: 3}
 --- !u!50 &-1686384059636569911
 Rigidbody2D:
   serializedVersion: 4
@@ -171,4 +172,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.83
+  m_Radius: 1.12

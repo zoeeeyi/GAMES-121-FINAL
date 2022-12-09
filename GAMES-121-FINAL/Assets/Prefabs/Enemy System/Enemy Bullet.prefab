@@ -49,7 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_targetTag:
   - Player
-  m_hitParticle: {fileID: 2293327769136361479, guid: 8ac3e56e1c695c844ab4ce09de38634d, type: 3}
+  m_hitTargetParticle: {fileID: 2293327769136361479, guid: 8ac3e56e1c695c844ab4ce09de38634d, type: 3}
+  m_otherHitParticle: {fileID: 0}
 --- !u!50 &4248310735850299648
 Rigidbody2D:
   serializedVersion: 4

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2936154298543045892}
   m_Layer: 10
   m_Name: Enemy Bullet
-  m_TagString: Untagged
+  m_TagString: Enemy Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42d559459b15d044ae7b5928e8da731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targetTag: Player
-  m_hitParticle: {fileID: 0}
+  m_targetTag:
+  - Player
+  m_hitParticle: {fileID: 2293327769136361479, guid: 8ac3e56e1c695c844ab4ce09de38634d, type: 3}
 --- !u!50 &4248310735850299648
 Rigidbody2D:
   serializedVersion: 4
@@ -85,7 +86,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.63
 --- !u!1 &6585730023563779921
 GameObject:
   m_ObjectHideFlags: 0

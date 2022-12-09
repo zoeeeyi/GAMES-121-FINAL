@@ -153,16 +153,22 @@ public class CameraController : MonoBehaviour
         #endregion
     }
 
-    public IEnumerator CameraShake()
+    public void CameraShake(float _strengthMult = 1)
+    {
+        StopCoroutine(CameraShakeCoroutine());
+        StartCoroutine(CameraShakeCoroutine(_strengthMult));
+    }
+
+    IEnumerator CameraShakeCoroutine(float _strengthMult = 1)
     {
         //Vector2 _startPos = transform.position;
         float _timer = 0;
 
         while (_timer < m_shakeDuration)
         {
-            _timer += Time.deltaTime;
-            float _strength = m_strengthCurve.Evaluate(_timer / m_shakeDuration);
-            transform.position += (Vector3) Random.insideUnitCircle * _strength;
+            _timer += Time.unscaledDeltaTime;
+            float _strengthCurveValue = m_strengthCurve.Evaluate(_timer / m_shakeDuration);
+            transform.position += (Vector3) Random.insideUnitCircle * _strengthCurveValue * _strengthMult;
             yield return null;
         }
 

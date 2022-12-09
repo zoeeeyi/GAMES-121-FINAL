@@ -3335,9 +3335,9 @@ MonoBehaviour:
   m_jumpForce: 16
   m_jumpMode: 1
   m_jumpCoyoteTime: 0.2
-  m_wallJumpForce: {x: 20, y: 40}
+  m_wallJumpForce: {x: 17, y: 27}
   m_wallJumpMode: 1
-  m_wallJumpCoyoteTime: 0.5
+  m_wallJumpCoyoteTime: 0.2
   m_wallStickTime: 0.3
   m_MovementSmoothingTime: 0
   m_normalGrav: 7

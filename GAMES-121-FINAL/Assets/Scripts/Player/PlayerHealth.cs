@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : HealthSystemParent
 {
-    protected override void OnDeathEvent()
+    protected override void PreDeathEvent()
     {
         //Destroy all the existing weapon/skill bundles
         GameObject[] _bundles = GameObject.FindGameObjectsWithTag("Bundle");
@@ -12,5 +12,9 @@ public class PlayerHealth : HealthSystemParent
 
         //Destroy self
         Destroy(gameObject);
+    }
+
+    protected override void DeathEvent()
+    {
     }
 }

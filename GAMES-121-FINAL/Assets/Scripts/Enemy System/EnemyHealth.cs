@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : HealthSystemParent
+public abstract class EnemyHealth : HealthSystemParent
 {
-    [SerializeField] GameObject m_bundleDrop;
-    protected override void OnDeathEvent()
+    [SerializeField] protected GameObject m_bundleDrop;
+    protected override abstract void PreDeathEvent();
+
+    protected override void DeathEvent()
     {
-        Instantiate(m_bundleDrop, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

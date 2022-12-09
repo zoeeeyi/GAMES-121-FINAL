@@ -125,6 +125,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2391272294681074625}
   - component: {fileID: 3968384792888686892}
+  - component: {fileID: 288313346}
+  - component: {fileID: 288313347}
   m_Layer: 11
   m_Name: Head
   m_TagString: Untagged
@@ -140,7 +142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6151048300965665540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.42, z: 0}
+  m_LocalPosition: {x: 0, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -200,6 +202,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &288313346
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151048300965665540}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 2
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!70 &288313347
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151048300965665540}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.29333335, y: -0.03999996}
+  m_Size: {x: 1.31, y: 0.65}
+  m_Direction: 1
 --- !u!1 &7553707443868778144
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +309,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7553707443868778144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e25b02f1b14cae845a3a09c19d0d2891, type: 3}
+  m_Script: {fileID: 11500000, guid: e1fede7ef486ff14b8e35ead4745ac37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_totalHealth: 1

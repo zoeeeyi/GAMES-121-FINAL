@@ -53,7 +53,7 @@ public class Katana : WeaponParent
         {
             #region Deal Damage
             _h.TryGetComponent<HealthSystemParent>(out HealthSystemParent _health);
-            if (_h != null)
+            if (_health != null)
             {
                 Instantiate(m_hitParticle, _h.transform.position, Quaternion.identity);
                 _health.TakeDamage();

@@ -8,5 +8,6 @@ public class TurretHealth : EnemyHealth
     {
         Instantiate(m_bundleDrop, transform.position, Quaternion.identity);
         GetComponent<Animator>().SetTrigger("Damaged");
+        GetComponent<Collider2D>().enabled = false;
     }
 }

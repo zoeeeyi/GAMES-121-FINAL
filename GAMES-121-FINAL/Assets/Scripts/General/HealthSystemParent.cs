@@ -7,7 +7,7 @@ public abstract class HealthSystemParent : MonoBehaviour
     [SerializeField] protected int m_totalHealth;
     protected int m_currentHealth;
 
-    protected void Start()
+    protected virtual void Start()
     {
         m_currentHealth = m_totalHealth;
     }

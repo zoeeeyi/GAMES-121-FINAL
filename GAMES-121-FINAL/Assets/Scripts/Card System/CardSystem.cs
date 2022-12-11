@@ -26,6 +26,7 @@ public class CardSystem : MonoBehaviour
 
     //Start card
     [SerializeField] GameObject m_startBundle;
+    public GameObject startBundle { get { return m_startBundle; } }
     [SerializeField] GameObject m_testBundle;
     #endregion
 
@@ -118,6 +119,16 @@ public class CardSystem : MonoBehaviour
 
     public bool AddCard(GameObject _newBundle)
     {
+        //If there's only one card in the deck, check if this card is start bundle
+        if (m_slotUsedCount == 1)
+        {
+            if (m_cards[0].GetWeaponName() 
+                == m_startBundle.GetComponentInChildren<WeaponParent>().gameObject.name)
+            {
+                m_cards[0].DeleteCardAndBundle();
+            }
+        }
+
         //Check if slots are full. This step should be done before the method is called
         if (m_slotUsedCount >= m_cards.Length) return false;
 

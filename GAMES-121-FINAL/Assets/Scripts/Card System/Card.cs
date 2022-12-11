@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_ammoCount;
     [SerializeField] TextMeshProUGUI m_weaponName;
     [SerializeField] TextMeshProUGUI m_SkillName;
-    GameObject m_bundle;
+    GameObject bundle;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class Card : MonoBehaviour
     public void CreateCard(GameObject _newBundle)
     {
         //Update card info
-        m_bundle = _newBundle;
+        bundle = _newBundle;
         WeaponParent _weapon = _newBundle.GetComponentInChildren<WeaponParent>();
         SkillParent _skill = _newBundle.GetComponentInChildren<SkillParent>();
         m_ammoCount.text =  _weapon.bulletCount.ToString();
@@ -59,7 +59,7 @@ public class Card : MonoBehaviour
         m_bgAnimator.SetTrigger("Add Card");
     }
 
-    public void DeleteCard()
+    public void DeleteCard(bool _checkIfDeckEmpty = true)
     {
         //Check if slots are empty. This step should be done before the method is called
         if (CardSystem.instance.slotUsedCount <= 0) return;
@@ -74,8 +74,25 @@ public class Card : MonoBehaviour
         CardSystem.instance.slotUsedCount--;
         CardSystem.instance.UpdateCardPosition();
 
+        //Add start bundle back if all other cards are gone
+        if (_checkIfDeckEmpty)
+        {
+            if (CardSystem.instance.slotUsedCount == 0)
+            {
+                CardSystem.instance.AddCard(CardSystem.instance.startBundle);
+            }
+        }
+
+
         //Reset animator
         //ResetAnimator();
+    }
+
+    public void DeleteCardAndBundle()
+    {
+        SelectCard(false);
+        bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled(true);
+        DeleteCard(false);
     }
 
     public void SelectCard(bool _b)
@@ -85,10 +102,10 @@ public class Card : MonoBehaviour
             m_bgAnimator.SetTrigger("Select");
 
             //Set the bundle back online
-            if (m_bundle != null)
+            if (bundle != null)
             {
-                m_bundle.SetActive(true);
-                foreach (Transform _child in m_bundle.transform)
+                bundle.SetActive(true);
+                foreach (Transform _child in bundle.transform)
                 {
                     _child.gameObject.SetActive(true);
                 }
@@ -99,12 +116,12 @@ public class Card : MonoBehaviour
             m_bgAnimator.SetTrigger("Deselect");
 
             //Set weapon and skill offline
-            WeaponParent _weapon = m_bundle.GetComponentInChildren<WeaponParent>();
+            WeaponParent _weapon = bundle.GetComponentInChildren<WeaponParent>();
             _weapon.gameObject.SetActive(false);
             if (_weapon?.bulletCount > 0)
             {
                 //If bullet count is 0, the skill will destroy itself when it's completed
-                m_bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
+                bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
             }
         }
     }
@@ -118,14 +135,9 @@ public class Card : MonoBehaviour
         else m_ammoCount.text = _c.ToString();
     }
 
-    public void SetWeaponName(string _s)
+    public string GetWeaponName()
     {
-        m_weaponName.text = _s;
-    }
-
-    public void SetSkillName(string _s)
-    {
-        m_SkillName.text = _s;
+        return m_weaponName.text;
     }
     #endregion
 }

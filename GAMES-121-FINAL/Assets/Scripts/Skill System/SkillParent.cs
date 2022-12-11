@@ -7,7 +7,7 @@ public abstract class SkillParent : MonoBehaviour
 {
     #region Event Control
     protected bool m_toBeDisabled = false;
-
+    protected bool m_toBeDestroyed = false;
     protected bool m_skillExecuting = false;
     public bool skillExecuting { get { return m_skillExecuting; } set { m_skillExecuting = value; } }
     #endregion
@@ -44,7 +44,7 @@ public abstract class SkillParent : MonoBehaviour
     protected virtual void FinishEventLoop()
     {
         m_skillExecuting = false;
-        if (m_bundledWeapon?.bulletCount <= 0) DestroyEvent();
+        if ((m_bundledWeapon?.bulletCount <= 0) || m_toBeDestroyed) DestroyEvent();
         if (m_toBeDisabled) DisableEvent();
     }
 
@@ -61,10 +61,11 @@ public abstract class SkillParent : MonoBehaviour
         else gameObject.SetActive(false);
     }
 
-    public void SetToBeDisabled()
+    public void SetToBeDisabled(bool _destroy = false)
     {
         m_toBeDisabled = true;
-        if (!m_skillExecuting) DisableEvent();
+        m_toBeDestroyed = _destroy;
+        if (!m_skillExecuting) FinishEventLoop();
     }
     #endregion
 

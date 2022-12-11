@@ -226,6 +226,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7553707443868778147, guid: e415c04579f67054285de248436e7ec8, type: 3}
   m_PrefabInstance: {fileID: 1382160978}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &271167711 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3359029106868804313, guid: c6cde3adc70a3ab408ef6c762ce93fdc, type: 3}
+  m_PrefabInstance: {fileID: 1113111533}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &320366702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4597,6 +4608,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1225417934215824300, guid: d3f72f9526d18ae40b50f263a09db3e1, type: 3}
+      propertyPath: orthographic size
+      value: 11.25
+      objectReference: {fileID: 0}
     - target: {fileID: 1225417934215824303, guid: d3f72f9526d18ae40b50f263a09db3e1, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -4811,6 +4826,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBarUI
+      value: 
+      objectReference: {fileID: 271167711}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_totalHealth
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBars.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBars.Array.data[0]
+      value: 
+      objectReference: {fileID: 877141698, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBars.Array.data[1]
+      value: 
+      objectReference: {fileID: -681493852, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBars.Array.data[2]
+      value: 
+      objectReference: {fileID: 488838066, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
+    - target: {fileID: 8273514059069842268, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
+      propertyPath: m_healthBars.Array.data[3]
+      value: 
+      objectReference: {fileID: 343480740, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 779a826cea06ca24dbf31067ded2a1b2, type: 3}
 --- !u!1 &1618588811 stripped

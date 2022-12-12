@@ -7,6 +7,10 @@ using UnityEngine.Events;
 
 public abstract class WeaponParent : MonoBehaviour
 {
+    #region State Machine
+    protected bool state_attacking = false;
+    #endregion
+
     #region Card
     Card m_card;
     public Card card { get { return m_card; } set { m_card = value; } }
@@ -28,6 +32,7 @@ public abstract class WeaponParent : MonoBehaviour
     #region Mouse Aimming Variables
     private Camera m_mainCam;
     private Vector3 m_mousePos;
+    protected float m_aimEulerAngle = 0;
     public Vector2 aimDir {get; private set;}
     #endregion
 
@@ -56,7 +61,7 @@ public abstract class WeaponParent : MonoBehaviour
         if (m_audioManager != null) m_audioManager.transform.parent = null;
     }
 
-    protected void Start()
+    protected virtual void Start()
     {
         #region Fetch Components
         m_mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -82,8 +87,8 @@ public abstract class WeaponParent : MonoBehaviour
 
         //Rotate
         m_weaponSprite.flipY = (aimDir.x < 0);
-        float _rotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-        m_weaponSprite.transform.rotation = Quaternion.Euler(0, 0, _rotation);
+        m_aimEulerAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+        m_weaponSprite.transform.rotation = Quaternion.Euler(0, 0, m_aimEulerAngle);
         #endregion
 
         #region Fire Input

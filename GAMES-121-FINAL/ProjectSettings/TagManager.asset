@@ -9,6 +9,7 @@ TagManager:
   - Enemy Bullet
   - Bundle
   - Card System
+  - Weapon Bullet
   layers:
   - Default
   - TransparentFX

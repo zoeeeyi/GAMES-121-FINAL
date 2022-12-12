@@ -171,6 +171,8 @@ MonoBehaviour:
   m_weaponSprite: {fileID: 5464340681922663557}
   m_audioManager: {fileID: 4826971104733125434}
   m_shootForce: 50
+  m_shotSpreadAngle: 15
+  m_oneShotBulletAmount: 3
   m_cameraShakeStrength: 0.15
 --- !u!1773428102 &5464340683019637437
 ParentConstraint:

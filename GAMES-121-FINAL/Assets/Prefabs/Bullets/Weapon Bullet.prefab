@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8850306082917725389}
   m_Layer: 6
   m_Name: Weapon Bullet
-  m_TagString: Untagged
+  m_TagString: Weapon Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   m_targetTag:
   - Enemy
   - Enemy Bullet
+  m_exceptionTag: []
   m_hitTargetParticle: {fileID: 2293327769136361479, guid: acc561d2eef3e024f8b41454b7e6d526, type: 3}
   m_otherHitParticle: {fileID: 2293327769136361479, guid: 4bc81dd35b0ec6340ac4f979b6aaf2bb, type: 3}
 --- !u!50 &-1686384059636569911

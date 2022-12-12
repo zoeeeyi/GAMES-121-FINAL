@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class CardSystem : MonoBehaviour
 {
@@ -68,13 +69,14 @@ public class CardSystem : MonoBehaviour
 
     private void Update()
     {
+        
         #region Input
-        if (Input.GetButtonDown("Next Weapon"))
+        if (Input.GetButtonDown("Next Weapon") || (Input.GetAxis("Mouse ScrollWheel") < -0.1))
         {
             SwitchCard(-1);
         }
 
-        if (Input.GetButtonDown("Previous Weapon"))
+        if (Input.GetButtonDown("Previous Weapon") || (Input.GetAxis("Mouse ScrollWheel") > 0.1))
         {
             SwitchCard(-2);
         }

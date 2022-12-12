@@ -1,12 +1,14 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Shotgun : WeaponParent
 {
-    [SerializeField] float m_bulletForce;
+    [BoxGroup("Weapon Settings")]
+    [SerializeField] float m_shootForce;
 
-    [Header("Visual Effect Settings")]
+    [BoxGroup("Visual")]
     [Range(0f, 1f)]
     [SerializeField] float m_cameraShakeStrength;
 
@@ -19,7 +21,8 @@ public class Shotgun : WeaponParent
     {
         CameraController.instance.CameraShake(m_cameraShakeStrength);
         m_animator.SetTrigger("Shoot");
-        GameObject _bullet = Instantiate(m_bullet, m_bulletPoint.position, m_weaponSprite.transform.rotation);
-        _bullet.GetComponent<Rigidbody2D>().AddForce(m_bulletForce * _bullet.transform.right, ForceMode2D.Impulse);
+        m_audioManager.Play("Fire");
+        GameObject _bullet = Instantiate(m_bulletObject, m_firePoint.position, m_weaponSprite.transform.rotation);
+        _bullet.GetComponent<Rigidbody2D>().AddForce(m_shootForce * _bullet.transform.right, ForceMode2D.Impulse);
     }
 }

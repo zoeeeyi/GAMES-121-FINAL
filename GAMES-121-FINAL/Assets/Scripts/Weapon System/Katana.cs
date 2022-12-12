@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,14 @@ using UnityEngine;
 public class Katana : WeaponParent
 {
     #region Katana Properties
-    [Header("Katana Properties")]
-    [SerializeField] Transform m_attackPoint;
+    [BoxGroup("Weapon Settings")]
     [SerializeField] float m_attackRadius;
+    [BoxGroup("Weapon Settings")]
     [SerializeField] LayerMask m_targetLayers;
     #endregion
 
     #region Visual Effects
+    [BoxGroup("Visual")]
     [SerializeField] ParticleSystem m_hitParticle;
     #endregion
 
@@ -36,18 +38,20 @@ public class Katana : WeaponParent
     {
         state_damageDealt = false;
         m_animator.SetTrigger("Strike");
+        m_audioManager.Play("Slash");
     }
 
     void Parry()
     {
         m_animator.SetTrigger("Parry");
+        //m_audioManager.Play("Parry");
     }
 
     //Deal damage is triggered by animation
     void DealDamage()
     {
         if (state_damageDealt) return;
-        Collider2D[] _hit = Physics2D.OverlapCircleAll(m_attackPoint.position, m_attackRadius, m_targetLayers);
+        Collider2D[] _hit = Physics2D.OverlapCircleAll(m_firePoint.position, m_attackRadius, m_targetLayers);
         if (_hit.Length > 0) state_damageDealt = true;
         foreach (Collider2D _h in _hit)
         {
@@ -66,9 +70,9 @@ public class Katana : WeaponParent
 
     private void OnDrawGizmosSelected()
     {
-        if (m_attackPoint != null)
+        if (m_firePoint != null)
         {
-            Gizmos.DrawWireSphere(m_attackPoint.position, m_attackRadius);
+            Gizmos.DrawWireSphere(m_firePoint.position, m_attackRadius);
         }
     }
 }

@@ -44,7 +44,8 @@ public class Card : MonoBehaviour
         bundle = _newBundle;
         WeaponParent _weapon = _newBundle.GetComponentInChildren<WeaponParent>();
         SkillParent _skill = _newBundle.GetComponentInChildren<SkillParent>();
-        m_ammoCount.text =  _weapon.bulletCount.ToString();
+        if (_weapon.isMeleeWeapon) m_ammoCount.text = "\u221E";
+        else m_ammoCount.text =  _weapon.ammoCount.ToString();
         m_weaponName.text = _weapon.gameObject.name;
         m_SkillName.text = _skill.gameObject.name;
 
@@ -117,11 +118,15 @@ public class Card : MonoBehaviour
 
             //Set weapon and skill offline
             WeaponParent _weapon = bundle.GetComponentInChildren<WeaponParent>();
-            _weapon.gameObject.SetActive(false);
-            if (_weapon?.bulletCount > 0)
+            if (_weapon != null)
             {
-                //If bullet count is 0, the skill will destroy itself when it's completed
-                bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
+                _weapon.gameObject.SetActive(false);
+                if (_weapon.ammoCount > 0 || _weapon.isMeleeWeapon)
+                {
+                    //If bullet count is 0, the skill will destroy itself when it's completed
+                    //This step is for temporarily disable the weapon when switching
+                    bundle.GetComponentInChildren<SkillParent>().SetToBeDisabled();
+                }
             }
         }
     }

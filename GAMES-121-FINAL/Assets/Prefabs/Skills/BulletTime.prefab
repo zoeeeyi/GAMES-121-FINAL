@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_needMouseHold: 1
   m_targetTimeScale: 0.5
-  m_speedOfChange: 0.5
-  m_exponentialModifier: 10
+  m_speedOfChange: 2
+  m_exponentialModifier: 6

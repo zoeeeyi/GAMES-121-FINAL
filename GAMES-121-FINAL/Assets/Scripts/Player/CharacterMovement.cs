@@ -54,6 +54,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     #region Components Variables
     [Header("Components")]
     private Rigidbody2D m_rb;
+    private AudioManager m_audioManager;
     #endregion
 
     #region State Variables
@@ -71,7 +72,12 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		m_rb = GetComponent<Rigidbody2D>();
 	}
 
-	private void FixedUpdate()
+    private void Start()
+    {
+        m_audioManager = GetComponentInChildren<AudioManager>();
+    }
+
+    private void FixedUpdate()
 	{
         #region Flip Player
         if (Mathf.Abs(m_rb.velocity.x) > 0.1f && Mathf.Sign(m_rb.velocity.x) != m_facingRight)
@@ -248,6 +254,9 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 			state_grounded = false;
 			state_jumping = true;
             m_rb.AddForce(new Vector2(0f, m_jumpForce), m_jumpMode);
+
+            //Play Audio
+            m_audioManager?.Play("Jump");
         }
         else if (state_onWall || m_wallJumpCoyoteTimer > 0)
         {
@@ -257,6 +266,9 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             Vector2 _wallJumpForce = new Vector2(m_wallJumpForce.x * m_wallOutDirection, m_wallJumpForce.y);
             ExtractMovementData(m_wallMovementRecorder);
             m_rb.AddForce(_wallJumpForce, m_wallJumpMode);
+
+            //Play Audio
+            m_audioManager?.Play("Jump");
         }
 
         //Reset coyote times

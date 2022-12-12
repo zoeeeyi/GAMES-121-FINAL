@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,29 +7,22 @@ using UnityEngine.Events;
 
 public abstract class WeaponParent : MonoBehaviour
 {
-    #region General Variables
-    [Header("General Variabes")]
-    [SerializeField] protected string m_weaponName;
-    public string weaponName
-    {
-        get { return m_weaponName; }
-        set { m_weaponName = value; }
-    }
-
+    #region Card
     Card m_card;
     public Card card { get { return m_card; } set { m_card = value; } }
     #endregion
 
-    #region Bullet Settings
-    [Header("Bullet Settings")]
-    [SerializeField] protected int m_bulletCount;
-    public int bulletCount
+    #region Ammo Settings
+    [BoxGroup("Weapon Settings")] [SerializeField] bool m_meleeWeapon = false;
+    public bool isMeleeWeapon { get { return m_meleeWeapon; }}
+    [BoxGroup("Weapon Settings")] [HideIf("m_meleeWeapon", true)] [SerializeField] protected int m_ammoCount;
+    public int ammoCount
     {
-        get { return m_bulletCount; }
-        set { m_bulletCount = value; }
+        get { return m_ammoCount; }
+        set { m_ammoCount = value; }
     }
-    [SerializeField] protected GameObject m_bullet;
-    [SerializeField] protected Transform m_bulletPoint;
+    [BoxGroup("Weapon Settings")] [HideIf("m_meleeWeapon", true)] [SerializeField] protected GameObject m_bulletObject;
+    [BoxGroup("Weapon Settings")] [SerializeField] protected Transform m_firePoint;
     #endregion
 
     #region Mouse Aimming Variables
@@ -37,9 +31,15 @@ public abstract class WeaponParent : MonoBehaviour
     public Vector2 aimDir {get; private set;}
     #endregion
 
-    #region Animation
+    #region Visual
+    [BoxGroup("Visual")]
     [SerializeField] protected SpriteRenderer m_weaponSprite;
     protected Animator m_animator;
+    #endregion
+
+    #region SFX
+    [BoxGroup("SFX")]
+    [SerializeField] protected AudioManager m_audioManager;
     #endregion
 
     protected void Awake()
@@ -51,6 +51,9 @@ public abstract class WeaponParent : MonoBehaviour
         _player.weight = 1;
         GetComponent<ParentConstraint>().AddSource(_player);
         #endregion
+
+        //Detach Audio Source
+        if (m_audioManager != null) m_audioManager.transform.parent = null;
     }
 
     protected void Start()
@@ -84,13 +87,19 @@ public abstract class WeaponParent : MonoBehaviour
         #endregion
 
         #region Fire Input
-        if (Input.GetButtonDown("Fire") && m_bulletCount > 0)
+        if (Input.GetButtonDown("Fire") && m_ammoCount > 0)
         {
-            m_bulletCount--;
-            if (m_card != null) m_card.SetAmmoCount(m_bulletCount);
+            m_ammoCount--;
+            if (m_card != null) m_card.SetAmmoCount(m_ammoCount);
             Fire();
         }
         #endregion
     }
     protected abstract void Fire();
+
+    private void OnDestroy()
+    {
+        if (!this.gameObject.scene.isLoaded) return;
+        if (m_audioManager != null) m_audioManager.SetToBeDestroyed();
+    }
 }

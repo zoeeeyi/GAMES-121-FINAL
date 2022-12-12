@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +16,17 @@ public abstract class SkillParent : MonoBehaviour
     protected WeaponParent m_bundledWeapon;
     protected CharacterMovement m_characterMovement;
 
+    [BoxGroup("SFX")]
+    [SerializeField] AudioManager m_audioManager;
+
     protected virtual void Awake()
     {
         m_characterMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
         //Try to find bundled weapon
         if (transform.parent != null) m_bundledWeapon = transform.parent.GetComponentInChildren<WeaponParent>();
+
+        //Detach Audio Source
+        if (m_audioManager != null) m_audioManager.transform.parent = null;
     }
 
     protected virtual void OnEnable()
@@ -31,7 +38,7 @@ public abstract class SkillParent : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire") && !m_toBeDisabled)
         {
-            if (m_bundledWeapon?.bulletCount > 0) ExecuteSkill();
+            if (m_bundledWeapon?.ammoCount > 0 || m_bundledWeapon.isMeleeWeapon) ExecuteSkill();
             else ExecuteSkill();
 
             m_skillExecuting = true;
@@ -44,13 +51,15 @@ public abstract class SkillParent : MonoBehaviour
     protected virtual void FinishEventLoop()
     {
         m_skillExecuting = false;
-        if ((m_bundledWeapon?.bulletCount <= 0) || m_toBeDestroyed) DestroyEvent();
+        if ((m_bundledWeapon?.ammoCount <= 0 && !m_bundledWeapon.isMeleeWeapon) || m_toBeDestroyed) DestroyEvent();
         if (m_toBeDisabled) DisableEvent();
     }
 
     protected virtual void DestroyEvent()
     {
+        if (m_audioManager != null) m_audioManager.SetToBeDestroyed();
         if (transform.parent != null) Destroy(transform.parent.gameObject);
+
         GameObject.Find("Simple Inventory")?.GetComponent<SimpleInventory>().ChangeActiveBundle();
         Destroy(gameObject);
     }

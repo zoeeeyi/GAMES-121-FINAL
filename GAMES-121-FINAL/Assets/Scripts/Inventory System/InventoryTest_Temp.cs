@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -63,4 +63,4 @@ public class InventoryTest_Temp : MonoBehaviour
     {
         m_weaponName.text = m_currentWeapon.weaponName;
     }
-}
+}*/

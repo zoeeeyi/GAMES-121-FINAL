@@ -14,7 +14,19 @@ public class CardSystem : MonoBehaviour
     [SerializeField] Card[] m_cards;
     [SerializeField] Image m_cardSlotImage;
     [SerializeField] RectTransform m_cardSlotHolder;
-    Vector3[] m_cardSlots;
+    CardSlot[] m_cardSlots;
+    struct CardSlot
+    {
+        public Vector2 st_slotPos;
+        public Quaternion st_slotRotation;
+
+        public CardSlot(Vector2 _pos, Quaternion _rotation)
+        {
+            st_slotPos = _pos;
+            st_slotRotation = _rotation;
+        }
+    }
+
     int m_slotUsedCount = 0;
     public int slotUsedCount 
     { 
@@ -49,15 +61,18 @@ public class CardSystem : MonoBehaviour
     void Start()
     {
         #region Initiate Card Slots
-        m_cardSlots = new Vector3[m_cards.Length];
+        m_cardSlots = new CardSlot[m_cards.Length];
         for (int i = 0; i < m_cards.Length; i++)
         {
-            Vector3 _pos = m_cards[i].GetComponent<RectTransform>().anchoredPosition;
-            m_cardSlots[i] = _pos;
+            RectTransform _rect = m_cards[i].GetComponent<RectTransform>();
+            Vector3 _pos = _rect.anchoredPosition;
+            Quaternion _rotation = _rect.rotation;
+            m_cardSlots[i] = new CardSlot(_pos, _rotation);
 
-            //Instantiate Card Slot Image
+            //Instantiate Card Slot Image (Dot or whatever)
             Image _new = Instantiate(m_cardSlotImage, Vector2.zero, Quaternion.identity, m_cardSlotHolder);
             _new.rectTransform.anchoredPosition = _pos + new Vector3(0, 0, -1);
+            _new.rectTransform.rotation = _rotation;
         }
         #endregion
 
@@ -207,8 +222,14 @@ public class CardSystem : MonoBehaviour
                 DOTween.Kill(m_cards[i - 1].GetComponent<RectTransform>());
 
                 //Move cards to new position (Swap position)
-                m_cards[i].GetComponent<RectTransform>().DOAnchorPos(m_cardSlots[i - 1], m_cardMoveDuration);
-                m_cards[i - 1].GetComponent<RectTransform>().anchoredPosition = m_cardSlots[i];
+                RectTransform _rect_i = m_cards[i].GetComponent<RectTransform>();
+                //i-th card
+                _rect_i.DOAnchorPos(m_cardSlots[i - 1].st_slotPos, m_cardMoveDuration);
+                _rect_i.DORotateQuaternion(m_cardSlots[i - 1].st_slotRotation, m_cardMoveDuration);
+                //(i-1)-th card
+                RectTransform _rect = m_cards[i - 1].GetComponent<RectTransform>();
+                _rect.anchoredPosition = m_cardSlots[i].st_slotPos;
+                _rect.rotation = m_cardSlots[i].st_slotRotation;
 
                 //Update cards array
                 m_cards[i - 1] = m_cards[i];

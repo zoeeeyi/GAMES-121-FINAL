@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
@@ -11,17 +11,22 @@ public class Card : MonoBehaviour
     [Header("Card Design")]
     [SerializeField] GameObject m_background;
     Animator m_bgAnimator;
+    Canvas m_canvas; //for sorting layer
 
     [Header("Info Display")]
     [SerializeField] TextMeshProUGUI m_ammoCount;
     [SerializeField] TextMeshProUGUI m_weaponName;
     [SerializeField] TextMeshProUGUI m_SkillName;
+    Image m_cardBackground;
+    Sprite[] m_cardBgSprites;
     GameObject bundle;
 
     private void Awake()
     {
         //Fetch Components
         m_bgAnimator = m_background.GetComponent<Animator>();
+        m_cardBackground = m_background.GetComponent<Image>();
+        m_canvas = GetComponent<Canvas>();
 
         //Set background inactive when the game starts and player has no inventory
         m_background.SetActive(false);
@@ -49,6 +54,14 @@ public class Card : MonoBehaviour
         m_weaponName.text = _weapon.gameObject.name;
         m_SkillName.text = _skill.gameObject.name;
 
+        //Update card background
+        m_cardBgSprites = _weapon.weaponCardBackgrounds;
+        if (m_cardBgSprites.Length > 0)
+        {
+            m_cardBackground.sprite = m_cardBgSprites[m_cardBgSprites.Length - 1];
+        }
+        m_ammoCount.gameObject.SetActive(m_cardBgSprites.Length < 1); //Disable ammo count text if the ammo count is reflected through sprites
+
         //Bind this card to the weapon
         _weapon.card = this;
 
@@ -68,6 +81,7 @@ public class Card : MonoBehaviour
         //De-activate the card
         m_background.SetActive(false);
         m_background.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        m_cardBackground.sprite = null;
         isActive = false;
 
         //Update card system
@@ -101,6 +115,7 @@ public class Card : MonoBehaviour
         if (_b)
         {
             m_bgAnimator.SetTrigger("Select");
+            m_canvas.sortingOrder = 1;
 
             //Set the bundle back online
             if (bundle != null)
@@ -115,6 +130,7 @@ public class Card : MonoBehaviour
         else
         {
             m_bgAnimator.SetTrigger("Deselect");
+            m_canvas.sortingOrder = 0;
 
             //Set weapon and skill offline
             WeaponParent _weapon = bundle.GetComponentInChildren<WeaponParent>();
@@ -137,7 +153,11 @@ public class Card : MonoBehaviour
     {
         //If ammo is used up, we delete this card
         if (_c <= 0) DeleteCard();
-        else m_ammoCount.text = _c.ToString();
+        else
+        {
+            m_ammoCount.text = _c.ToString();
+            if (m_cardBgSprites.Length > 1) m_cardBackground.sprite = m_cardBgSprites[_c - 1];
+        }
     }
 
     public string GetWeaponName()

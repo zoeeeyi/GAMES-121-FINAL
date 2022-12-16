@@ -169,6 +169,10 @@ MonoBehaviour:
   m_bulletObject: {fileID: 7806678362133688496, guid: c632f9e3e3883734b8e93e1b0b88fb58, type: 3}
   m_firePoint: {fileID: 5464340681798272649}
   m_weaponSprite: {fileID: 5464340681922663557}
+  m_weaponCardBackgrounds:
+  - {fileID: 1136590566, guid: 744fde9c1900b4c4faded77bc267276b, type: 3}
+  - {fileID: 436302790, guid: 744fde9c1900b4c4faded77bc267276b, type: 3}
+  - {fileID: -2093856667, guid: 744fde9c1900b4c4faded77bc267276b, type: 3}
   m_audioManager: {fileID: 4826971104733125434}
   m_shootForce: 50
   m_shotSpreadAngle: 15

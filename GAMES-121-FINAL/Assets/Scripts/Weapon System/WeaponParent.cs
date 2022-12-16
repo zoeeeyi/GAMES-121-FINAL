@@ -37,8 +37,9 @@ public abstract class WeaponParent : MonoBehaviour
     #endregion
 
     #region Visual
-    [BoxGroup("Visual")]
-    [SerializeField] protected SpriteRenderer m_weaponSprite;
+    [BoxGroup("Visual")] [SerializeField] protected SpriteRenderer m_weaponSprite;
+    [BoxGroup("Visual")] [SerializeField] protected Sprite[] m_weaponCardBackgrounds;
+    public Sprite[] weaponCardBackgrounds { get { return m_weaponCardBackgrounds; }}
     protected Animator m_animator;
     #endregion
 

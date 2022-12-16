@@ -13,7 +13,9 @@ public class Card : MonoBehaviour
     [Header("Card Design")]
     [SerializeField] GameObject m_background;
     Animator m_bgAnimator;
-    Canvas m_canvas; //for sorting layer
+    Canvas m_canvas; //for sorting order
+    int m_currentSortOrder;
+    public int currentSortOrder { get { return m_currentSortOrder; } set { m_currentSortOrder = value; } }
 
     [Header("Info Display")]
     [SerializeField] TextMeshProUGUI m_ammoCount;
@@ -32,6 +34,9 @@ public class Card : MonoBehaviour
 
         //Set background inactive when the game starts and player has no inventory
         m_background.SetActive(false);
+
+        //Set other variables
+        m_currentSortOrder = m_canvas.sortingOrder;
     }
 
     #region Utility Methods
@@ -62,6 +67,7 @@ public class Card : MonoBehaviour
         {
             m_cardBackground.sprite = m_cardBgSprites[m_cardBgSprites.Length - 1];
         }
+        else m_cardBackground.sprite = null;
         m_ammoCount.gameObject.SetActive(m_cardBgSprites.Length < 1); //Disable ammo count text if the ammo count is reflected through sprites
 
         //Bind this card to the weapon
@@ -117,7 +123,7 @@ public class Card : MonoBehaviour
         if (_b)
         {
             m_bgAnimator.SetTrigger("Select");
-            m_canvas.sortingOrder = 1;
+            m_canvas.sortingOrder = CardSystem.instance.totalSlots;
 
             //Set the bundle back online
             if (bundle != null)
@@ -132,7 +138,7 @@ public class Card : MonoBehaviour
         else
         {
             m_bgAnimator.SetTrigger("Deselect");
-            m_canvas.sortingOrder = 0;
+            m_canvas.sortingOrder = m_currentSortOrder;
 
             //Set weapon and skill offline
             WeaponParent _weapon = bundle.GetComponentInChildren<WeaponParent>();

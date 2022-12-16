@@ -10,7 +10,7 @@ public class StopWatch : MonoBehaviour
     float stopWatch;
     double stopWatchRounded;
     GameManager m_gameManager;
-    bool m_gameStarted = false;
+    //bool m_gameStarted = false;
     bool m_paused = false;
 
     // Start is called before the first frame update

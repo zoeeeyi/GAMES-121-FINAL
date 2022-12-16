@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_totalHealth: 1
-  m_bundleDrop: {fileID: 5138350838181811128, guid: d0f5f50f7aeb08c46981b4884dbdeaef, type: 3}
+  m_cardDrop: {fileID: 5138350838181811128, guid: d0f5f50f7aeb08c46981b4884dbdeaef, type: 3}
 --- !u!58 &7553707443868778172
 CircleCollider2D:
   m_ObjectHideFlags: 0

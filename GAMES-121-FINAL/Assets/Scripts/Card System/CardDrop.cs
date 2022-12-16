@@ -4,9 +4,9 @@ using UnityEngine;
 
 //Temp referenced in: EnemyHealth.cs
 
-public class BundlePickup : MonoBehaviour
+public class CardDrop : MonoBehaviour
 {
-    [SerializeField] GameObject m_bundle;
+    [SerializeField] GameObject m_dropBundle;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
@@ -17,7 +17,7 @@ public class BundlePickup : MonoBehaviour
             */
             if (CardSystem.instance != null)
             {
-                if (CardSystem.instance.AddCard(m_bundle)) Destroy(gameObject);
+                if (CardSystem.instance.AddCard(m_dropBundle)) Destroy(gameObject);
             }
         }
     }

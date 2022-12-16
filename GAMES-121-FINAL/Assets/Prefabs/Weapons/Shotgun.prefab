@@ -178,6 +178,10 @@ MonoBehaviour:
   m_shotSpreadAngle: 15
   m_oneShotBulletAmount: 3
   m_cameraShakeStrength: 0.15
+  m_defaultCursor: {fileID: 2800000, guid: f6d31f969a0b3e043a9d63dd4624d732, type: 3}
+  m_cursorOffset: {x: 0, y: 0}
+  m_cursorMode: 0
+  m_shootCursorAnimation: {fileID: 11400000, guid: 2a163a591ff53bd459833beef761c804, type: 2}
 --- !u!1773428102 &5464340683019637437
 ParentConstraint:
   m_ObjectHideFlags: 0

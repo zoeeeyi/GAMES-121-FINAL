@@ -14,6 +14,16 @@ public class Shotgun : WeaponParent
     [Range(0f, 1f)]
     [SerializeField] float m_cameraShakeStrength;
 
+    [BoxGroup("Cursor Settings")] [SerializeField] Texture2D m_defaultCursor;
+    [BoxGroup("Cursor Settings")] [SerializeField] Vector2 m_cursorOffset;
+    [BoxGroup("Cursor Settings")] [SerializeField] CursorMode m_cursorMode;
+    [BoxGroup("Cursor Settings")] [SerializeField] CursorAnimationClip m_shootCursorAnimation;
+
+    private void OnEnable()
+    {
+        CursorController.instance?.SetDefaultCursor(m_defaultCursor, m_cursorOffset, m_cursorMode);
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -22,6 +32,7 @@ public class Shotgun : WeaponParent
     protected override void Fire()
     {
         CameraController.instance.CameraShake(m_cameraShakeStrength);
+        CursorController.instance?.PlayCursorAnimation.Invoke(m_shootCursorAnimation);
         m_animator.SetTrigger("Shoot");
         m_audioManager.Play("Fire");
 

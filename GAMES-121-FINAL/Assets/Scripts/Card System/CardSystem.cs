@@ -19,18 +19,21 @@ public class CardSystem : MonoBehaviour
     {
         public Vector2 st_slotPos;
         public Quaternion st_slotRotation;
+        public int st_sortingOrder;
 
-        public CardSlot(Vector2 _pos, Quaternion _rotation)
+        public CardSlot(Vector2 _pos, Quaternion _rotation, int _order)
         {
             st_slotPos = _pos;
             st_slotRotation = _rotation;
+            st_sortingOrder = _order;
         }
     }
 
+    public int totalSlots { get; private set; }
     int m_slotUsedCount = 0;
     public int slotUsedCount 
-    { 
-        get { return m_slotUsedCount; } 
+    {
+        get { return m_slotUsedCount; }
         set { m_slotUsedCount = value; }
     }
 
@@ -46,6 +49,7 @@ public class CardSystem : MonoBehaviour
     #region Animation Settings
     [Header("Animation Settings")]
     [SerializeField] static float m_cardMoveDuration = 0.5f;
+    [SerializeField] bool m_centerIfOnlyOneCard = false;
     #endregion    
 
     private void Awake()
@@ -61,18 +65,23 @@ public class CardSystem : MonoBehaviour
     void Start()
     {
         #region Initiate Card Slots
+        totalSlots = m_cards.Length;
         m_cardSlots = new CardSlot[m_cards.Length];
         for (int i = 0; i < m_cards.Length; i++)
         {
             RectTransform _rect = m_cards[i].GetComponent<RectTransform>();
             Vector3 _pos = _rect.anchoredPosition;
             Quaternion _rotation = _rect.rotation;
-            m_cardSlots[i] = new CardSlot(_pos, _rotation);
+            int _order = m_cards[i].GetComponent<Canvas>().sortingOrder;
+            m_cardSlots[i] = new CardSlot(_pos, _rotation, _order);
 
             //Instantiate Card Slot Image (Dot or whatever)
-            Image _new = Instantiate(m_cardSlotImage, Vector2.zero, Quaternion.identity, m_cardSlotHolder);
-            _new.rectTransform.anchoredPosition = _pos + new Vector3(0, 0, -1);
-            _new.rectTransform.rotation = _rotation;
+            if (m_cardSlotImage != null)
+            {
+                Image _new = Instantiate(m_cardSlotImage, Vector2.zero, Quaternion.identity, m_cardSlotHolder);
+                _new.rectTransform.anchoredPosition = _pos + new Vector3(0, 0, -1);
+                _new.rectTransform.rotation = _rotation;
+            }
         }
         #endregion
 
@@ -136,33 +145,40 @@ public class CardSystem : MonoBehaviour
 
     public bool AddCard(GameObject _newBundle)
     {
+        #region Check Conditions
         //If there's only one card in the deck, check if this card is start bundle
         if (m_slotUsedCount == 1)
         {
-            if (m_cards[0].GetWeaponName() 
+            if (m_cards[m_selectedCardIndex].GetWeaponName() 
                 == m_startBundle.GetComponentInChildren<WeaponParent>().gameObject.name)
             {
-                m_cards[0].DeleteCardAndBundle();
+                m_cards[m_selectedCardIndex].DeleteCardAndBundle();
             }
         }
 
         //Check if slots are full. This step should be done before the method is called
         if (m_slotUsedCount >= m_cards.Length) return false;
+        #endregion
+
+        #region Adding Card
+        m_slotUsedCount++;
+
+        //Update Card Position to make room for new cards
+        if (m_centerIfOnlyOneCard) UpdateCardPosition();
 
         //Instantiate gameobject
         GameObject _new = Instantiate(_newBundle, Vector2.zero, Quaternion.identity);
 
         //Create a new card at next available slot
-        m_cards[m_slotUsedCount].CreateCard(_new);
+        int _slotPosition = (m_slotUsedCount > 1) ? m_slotUsedCount - 1 : m_selectedCardIndex;
+        m_cards[_slotPosition].CreateCard(_new);
 
         //Set it inactive if there are other cards
-        if (m_slotUsedCount != m_selectedCardIndex) _new.SetActive(false);
-        else m_cards[m_slotUsedCount].SelectCard(true);
-
-        //Add used slot count
-        m_slotUsedCount++;
+        if (_slotPosition != m_selectedCardIndex) _new.SetActive(false);
+        else m_cards[_slotPosition].SelectCard(true);
 
         return true;
+        #endregion
     }
 
     public void SwitchCard()
@@ -207,35 +223,67 @@ public class CardSystem : MonoBehaviour
 
     public void UpdateCardPosition()
     {
+        if (m_slotUsedCount == 0) return;
+
+        //If we want to center the card if there's only one card, Move the card to the middle
+        #region Moving Card to Middle
+        if (m_slotUsedCount == 1 && m_centerIfOnlyOneCard)
+        {
+            int _middle = m_cards.Length / 2;
+            if (m_selectedCardIndex != _middle)
+            {
+                SwapCard(m_selectedCardIndex, _middle);
+                m_selectedCardIndex = _middle;
+            }
+            return;
+        }
+        #endregion
+
+
+        //If the card count >= 1
         for (int i = 1; i < m_cards.Length; i++)
         {
+            //Update sort order
+            if(i != m_selectedCardIndex) m_cards[i].UpdateSortOrder(m_cardSlots[i].st_sortingOrder);
+
+            //Move cards if needed
             if (m_cards[i].isActive && !m_cards[i - 1].isActive)
             {
                 //Change selected card index if applies
                 if (m_selectedCardIndex == i) m_selectedCardIndex = i - 1;
-
-                //Get a copy of card in position i - 1
-                Card _temp = m_cards[i - 1];
-
-                //Stop existing Dotween operations
-                DOTween.Kill(m_cards[i].GetComponent<RectTransform>());
-                DOTween.Kill(m_cards[i - 1].GetComponent<RectTransform>());
-
-                //Move cards to new position (Swap position)
-                RectTransform _rect_i = m_cards[i].GetComponent<RectTransform>();
-                //i-th card
-                _rect_i.DOAnchorPos(m_cardSlots[i - 1].st_slotPos, m_cardMoveDuration);
-                _rect_i.DORotateQuaternion(m_cardSlots[i - 1].st_slotRotation, m_cardMoveDuration);
-                //(i-1)-th card
-                RectTransform _rect = m_cards[i - 1].GetComponent<RectTransform>();
-                _rect.anchoredPosition = m_cardSlots[i].st_slotPos;
-                _rect.rotation = m_cardSlots[i].st_slotRotation;
-
-                //Update cards array
-                m_cards[i - 1] = m_cards[i];
-                m_cards[i] = _temp;
+                SwapCard(i, i - 1);
             }
         }
+    }
+
+    void SwapCard(int _this, int _swapTo)
+    {
+        //Get a copy of card in position i - 1
+        Card _temp = m_cards[_swapTo];
+
+        //Stop existing Dotween operations
+        DOTween.Kill(m_cards[_this].GetComponent<RectTransform>());
+        DOTween.Kill(m_cards[_swapTo].GetComponent<RectTransform>());
+
+        //Move cards to new position (Swap position)
+        RectTransform _rect;
+        Canvas _canvas;
+        //this card, uses dotween
+        _rect = m_cards[_this].GetComponent<RectTransform>();
+        _canvas = _rect.GetComponent<Canvas>();
+        _rect.DOAnchorPos(m_cardSlots[_swapTo].st_slotPos, m_cardMoveDuration);
+        _rect.DORotateQuaternion(m_cardSlots[_swapTo].st_slotRotation, m_cardMoveDuration);
+        m_cards[_this].UpdateSortOrder(m_cardSlots[_swapTo].st_sortingOrder);
+        //swap to card, immediate position change
+        _rect = m_cards[_swapTo].GetComponent<RectTransform>();
+        _canvas = _rect.GetComponent<Canvas>();
+        _rect.anchoredPosition = m_cardSlots[_this].st_slotPos;
+        _rect.rotation = m_cardSlots[_this].st_slotRotation;
+        m_cards[_swapTo].UpdateSortOrder(m_cardSlots[_this].st_sortingOrder);
+
+        //Update cards array
+        m_cards[_swapTo] = m_cards[_this];
+        m_cards[_this] = _temp;
     }
     #endregion
 }

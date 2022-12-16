@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyHealth : HealthSystemParent
 {
-    [SerializeField] protected GameObject m_bundleDrop;
+    [SerializeField] protected GameObject m_cardDrop;
     protected override abstract void PreDeathEvent();
 
     protected override void DeathEvent()

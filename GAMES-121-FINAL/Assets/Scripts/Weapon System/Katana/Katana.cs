@@ -7,6 +7,9 @@ public class Katana : WeaponParent
 {
     #region Katana Properties
     [BoxGroup("Weapon Settings")]
+    [SerializeField] Transform m_attackStartPoint;
+    float m_circleCastLength;
+    [BoxGroup("Weapon Settings")]
     [SerializeField] float m_attackRadius;
     [BoxGroup("Weapon Settings")]
     [SerializeField] LayerMask m_targetLayers;
@@ -32,6 +35,8 @@ public class Katana : WeaponParent
         base.Start();
 
         m_player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        m_circleCastLength = (m_firePoint.position - m_attackStartPoint.position).magnitude;
     }
 
     private void OnDisable()
@@ -69,7 +74,6 @@ public class Katana : WeaponParent
         RaycastHit2D _hit = Physics2D.Raycast(m_firePoint.position, m_player.position - m_firePoint.position, Mathf.Infinity, m_obstacleCheckLayers);
         if (_hit)
         {
-            Debug.Log("Inside Wall");
             state_attacking = false;
             m_animator.SetTrigger("Reset");
         }
@@ -79,18 +83,19 @@ public class Katana : WeaponParent
     void DealDamage()
     {
         if (state_damageDealt) return;
-        Collider2D[] _hit = Physics2D.OverlapCircleAll(m_firePoint.position, m_attackRadius, m_targetLayers);
-        foreach (Collider2D _h in _hit)
+        Vector2 _circleCastDir = m_firePoint.position - m_attackStartPoint.position;
+        RaycastHit2D[] _hit = Physics2D.CircleCastAll(m_attackStartPoint.position, m_attackRadius, _circleCastDir, m_circleCastLength, m_targetLayers);
+        foreach (RaycastHit2D _h in _hit)
         {
             //Check if there's probably some obstacles in between
-            RaycastHit2D _checkObstacle = Physics2D.Raycast(m_firePoint.position, _h.ClosestPoint(m_firePoint.position) - (Vector2)m_firePoint.position, Mathf.Infinity, m_obstacleCheckLayers);
+            RaycastHit2D _checkObstacle = Physics2D.Raycast(m_firePoint.position, _h.collider.ClosestPoint(m_firePoint.position) - (Vector2)m_firePoint.position, Mathf.Infinity, m_obstacleCheckLayers);
             if (_checkObstacle) continue;
 
             //Confirm damage dealt for this attack
             state_damageDealt = true;
 
             #region Deal Damage
-            _h.TryGetComponent<HealthSystemParent>(out HealthSystemParent _health);
+            _h.transform.TryGetComponent<HealthSystemParent>(out HealthSystemParent _health);
             if (_health != null)
             {
                 Instantiate(m_hitParticle, _h.transform.position, Quaternion.identity);
@@ -107,6 +112,11 @@ public class Katana : WeaponParent
         if (m_firePoint != null)
         {
             Gizmos.DrawWireSphere(m_firePoint.position, m_attackRadius);
+        }
+
+        if (m_attackStartPoint != null)
+        {
+            Gizmos.DrawWireSphere(m_attackStartPoint.position, m_attackRadius);
         }
     }
 }

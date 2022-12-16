@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
         #region Input
         if (Input.GetButtonDown("Restart"))
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         #endregion

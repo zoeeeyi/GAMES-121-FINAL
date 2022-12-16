@@ -32,6 +32,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
     private Vector3 m_movementSmoothV = Vector3.zero;
     private float m_bulletTimeScaleMult = 1;
     MovementRecorder m_wallMovementRecorder;
+    MovementRecorder m_groundMovementRecorder;
     #endregion
 
     #region Collision Variables
@@ -95,6 +96,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
             //if (!_lastGroundedState) PlayerAnimation.instance.Ground();
             state_grounded = true;
             if (m_rb.velocity.y <= 0) EndJump();
+            RecordMovementData(ref m_groundMovementRecorder);
         }
 
         //Ground Jump coyote time
@@ -253,6 +255,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 		{
 			state_grounded = false;
 			state_jumping = true;
+            ExtractMovementData(m_groundMovementRecorder);
             m_rb.AddForce(new Vector2(0f, m_jumpForce), m_jumpMode);
 
             //Play Audio

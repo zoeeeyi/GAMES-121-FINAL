@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class PlayerHealth : HealthSystemParent
 {
-    [SerializeField] Image m_healthBarUI;
-    [SerializeField] Sprite[] m_healthBars;
+    [SerializeField] PlayerHealthAgent so_playerHealthAgent;
 
     protected override void Start()
     {
         base.Start();
-        m_healthBarUI.sprite = m_healthBars[m_healthBars.Length - 1];
+
+        so_playerHealthAgent.UpdatePlayerHealth.Invoke(m_currentHealth);
     }
 
     public override void TakeDamage()
     {
         base.TakeDamage();
 
-        //Update UI
-        if (m_currentHealth < m_healthBars.Length) m_healthBarUI.sprite = m_healthBars[m_currentHealth];
+        //Invoke update health event
+        if (m_currentHealth < m_totalHealth && m_currentHealth >= 0) so_playerHealthAgent.UpdatePlayerHealth.Invoke(m_currentHealth);
     }
 
     protected override void PreDeathEvent()

@@ -356,12 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_totalHealth: 3
-  m_healthBarUI: {fileID: 0}
-  m_healthBars:
-  - {fileID: 877141698, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
-  - {fileID: -681493852, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
-  - {fileID: 488838066, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
-  - {fileID: 343480740, guid: ebcaf3752f903754e90a8d216678d028, type: 3}
+  so_playerHealthAgent: {fileID: 11400000, guid: c9e15e151b557f54ba023de04e43efdd, type: 2}
 --- !u!114 &8273514059069842266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +374,7 @@ MonoBehaviour:
   m_airSpeedMult: 0.8
   m_jumpForce: 16
   m_jumpMode: 1
-  m_jumpCoyoteTime: 0.2
+  m_jumpCoyoteTime: 0.05
   m_wallJumpForce: {x: 17, y: 27}
   m_wallJumpMode: 1
   m_wallJumpCoyoteTime: 0.2

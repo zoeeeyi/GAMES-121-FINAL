@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class TurretHealth : EnemyHealth
 {
+    [SerializeField] Transform m_cardDropPosition;
+
+    protected override void Start()
+    {
+        base.Start();
+        if (m_cardDropPosition == null) m_cardDropPosition = transform;
+    }
+
     protected override void PreDeathEvent()
     {
-        Instantiate(m_cardDrop, transform.position, Quaternion.identity);
+        Instantiate(m_cardDrop, m_cardDropPosition.position, Quaternion.identity);
         GetComponent<Animator>().SetTrigger("Damaged");
         GetComponent<Collider2D>().enabled = false;
     }

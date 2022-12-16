@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System;
 
 public class CardSystem : MonoBehaviour
 {
@@ -12,6 +13,16 @@ public class CardSystem : MonoBehaviour
     [Header("Card Inventory Settings")]
     //Cards and slots
     [SerializeField] Card[] m_cards;
+    Dictionary<int, int> m_indexConversion = new Dictionary<int, int>(); // <On Screen Order, Array Order>
+    /*    [SerializeField] CardObject[] m_cardObjects;
+        [Serializable]
+        struct CardObject
+        {
+            public Card card;
+            public int onScreenOrder;
+        }
+    */
+
     [SerializeField] Image m_cardSlotImage;
     [SerializeField] RectTransform m_cardSlotHolder;
     CardSlot[] m_cardSlots;
@@ -67,7 +78,11 @@ public class CardSystem : MonoBehaviour
             RectTransform _rect = m_cards[i].GetComponent<RectTransform>();
             Vector3 _pos = _rect.anchoredPosition;
             Quaternion _rotation = _rect.rotation;
-            m_cardSlots[i] = new CardSlot(_pos, _rotation);
+            //m_cardSlots[i] = new CardSlot(_pos, _rotation);
+            m_cardSlots[m_cards[i].onScreenOrder] = new CardSlot(_pos, _rotation);
+
+            //Create a dictionary where on screen order point to actual array order
+            m_indexConversion.Add(m_cards[i].onScreenOrder, i);
 
             //Instantiate Card Slot Image (Dot or whatever)
             Image _new = Instantiate(m_cardSlotImage, Vector2.zero, Quaternion.identity, m_cardSlotHolder);
@@ -207,7 +222,8 @@ public class CardSystem : MonoBehaviour
 
     public void UpdateCardPosition()
     {
-        for (int i = 1; i < m_cards.Length; i++)
+        #region Old Method
+        /*for (int i = 1; i < m_cards.Length; i++)
         {
             if (m_cards[i].isActive && !m_cards[i - 1].isActive)
             {
@@ -215,7 +231,7 @@ public class CardSystem : MonoBehaviour
                 if (m_selectedCardIndex == i) m_selectedCardIndex = i - 1;
 
                 //Get a copy of card in position i - 1
-                Card _temp = m_cards[i - 1];
+                Card _tempCard = m_cards[i - 1];
 
                 //Stop existing Dotween operations
                 DOTween.Kill(m_cards[i].GetComponent<RectTransform>());
@@ -233,9 +249,54 @@ public class CardSystem : MonoBehaviour
 
                 //Update cards array
                 m_cards[i - 1] = m_cards[i];
-                m_cards[i] = _temp;
+                m_cards[i] = _tempCard;
+
+                //Change on screen order
+                int _tempOrder = m_cards[i - 1].onScreenOrder;
+                m_cards[i - 1].onScreenOrder = m_cards[i].onScreenOrder;
+                m_cards[i].onScreenOrder = _tempOrder;
+            }
+        }*/
+        #endregion
+
+        for (int i = 0; i < m_cards.Length; i++)
+        {
+            if (i == m_cards.Length / 2) continue;
+
+            int _thisCardIndex = m_indexConversion[i];
+            int _theOtherCardIndex;
+            int _j;
+            if (i < m_cards.Length / 2) _theOtherCardIndex = m_indexConversion[_j = i + 1];
+            else _theOtherCardIndex = m_indexConversion[_j = i - 1];
+
+            if (m_cards[_thisCardIndex].isActive && !m_cards[_theOtherCardIndex].isActive)
+            {
+                //Change selected card index if applies
+                if (m_selectedCardIndex == _thisCardIndex) m_selectedCardIndex = _theOtherCardIndex;
+
+                //Get a copy of the other card
+                Card _tempCard = m_cards[_theOtherCardIndex];
+
+                //Stop existing Dotween operations
+                DOTween.Kill(m_cards[_thisCardIndex].GetComponent<RectTransform>());
+                DOTween.Kill(m_cards[_theOtherCardIndex].GetComponent<RectTransform>());
+
+                //Move cards to new position (Swap position)
+                RectTransform _rect_i = m_cards[_thisCardIndex].GetComponent<RectTransform>();
+                //i-th card
+                _rect_i.DOAnchorPos(m_cardSlots[_j].st_slotPos, m_cardMoveDuration);
+                _rect_i.DORotateQuaternion(m_cardSlots[_j].st_slotRotation, m_cardMoveDuration);
+                //(i-1)-th card
+                RectTransform _rect = m_cards[_theOtherCardIndex].GetComponent<RectTransform>();
+                _rect.anchoredPosition = m_cardSlots[i].st_slotPos;
+                _rect.rotation = m_cardSlots[i].st_slotRotation;
+
+                //Update cards array
+                m_cards[_theOtherCardIndex] = m_cards[_thisCardIndex];
+                m_cards[_thisCardIndex] = _tempCard;
             }
         }
+
     }
     #endregion
 }

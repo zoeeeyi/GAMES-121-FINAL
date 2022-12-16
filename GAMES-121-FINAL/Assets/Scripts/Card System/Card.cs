@@ -8,6 +8,8 @@ public class Card : MonoBehaviour
 {
     [HideInInspector] public bool isActive = false;
 
+    public int onScreenOrder;
+
     [Header("Card Design")]
     [SerializeField] GameObject m_background;
     Animator m_bgAnimator;

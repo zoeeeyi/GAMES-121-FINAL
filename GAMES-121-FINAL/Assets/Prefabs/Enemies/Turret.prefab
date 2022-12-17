@@ -239,6 +239,37 @@ CapsuleCollider2D:
   m_Offset: {x: 0.29333335, y: -0.03999996}
   m_Size: {x: 1.31, y: 0.65}
   m_Direction: 1
+--- !u!1 &7464017098957026546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7306995328048934152}
+  m_Layer: 11
+  m_Name: Card Drop Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7306995328048934152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7464017098957026546}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7553707443868778147}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7553707443868778144
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,6 +306,7 @@ Transform:
   - {fileID: 7553707445278155896}
   - {fileID: 2391272294681074625}
   - {fileID: 8449244953416564825}
+  - {fileID: 7306995328048934152}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -314,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_totalHealth: 1
   m_cardDrop: {fileID: 5138350838181811128, guid: d0f5f50f7aeb08c46981b4884dbdeaef, type: 3}
+  m_cardDropPosition: {fileID: 0}
 --- !u!58 &7553707443868778172
 CircleCollider2D:
   m_ObjectHideFlags: 0

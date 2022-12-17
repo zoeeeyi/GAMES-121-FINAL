@@ -71,13 +71,13 @@ public class Katana : WeaponParent
     //During attack animation, we need to check if Katana is in a wall
     public void InsideWallCheck()
     {
-        RaycastHit2D _hit = Physics2D.Raycast(m_firePoint.position, m_player.position - m_firePoint.position, Mathf.Infinity, m_obstacleCheckLayers);
+/*        RaycastHit2D _hit = Physics2D.Raycast(m_firePoint.position, m_player.position - m_firePoint.position, Mathf.Infinity, m_obstacleCheckLayers);
         if (_hit)
         {
             state_attacking = false;
             m_animator.SetTrigger("Reset");
         }
-    }
+*/    }
 
     //Deal damage is triggered by animation
     void DealDamage()

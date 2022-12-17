@@ -355,6 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388b729a5217b0a44a834ce43336fd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_immortal: 0
   m_totalHealth: 3
   so_playerHealthAgent: {fileID: 11400000, guid: c9e15e151b557f54ba023de04e43efdd, type: 2}
 --- !u!114 &8273514059069842266

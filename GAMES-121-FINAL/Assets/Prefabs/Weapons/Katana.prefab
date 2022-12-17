@@ -757,7 +757,7 @@ MonoBehaviour:
   m_firePoint: {fileID: 6726474300639246120}
   m_weaponSprite: {fileID: 6726474299251681184}
   m_weaponCardBackgrounds:
-  - {fileID: 21300000, guid: 606bdd88456f3034dada39cd5bf8cf38, type: 3}
+  - {fileID: 21300000, guid: 43a3a2063c1022c4aa93232299308be6, type: 3}
   m_audioManager: {fileID: 5545361274835159794}
   m_attackStartPoint: {fileID: 2971826195637166943}
   m_attackRadius: 0.9
@@ -959,6 +959,8 @@ MonoBehaviour:
   m_targetTag:
   - Enemy Bullet
   m_hitTargetParticle: {fileID: 2293327769136361479, guid: 4bc81dd35b0ec6340ac4f979b6aaf2bb, type: 3}
+  m_parryBullet: {fileID: -1686384059636569911, guid: 22ce547f209859f4a9dedf4c67fe04b9, type: 3}
+  m_parryVelocityMult: 4
 --- !u!1 &8708295035650091577
 GameObject:
   m_ObjectHideFlags: 0

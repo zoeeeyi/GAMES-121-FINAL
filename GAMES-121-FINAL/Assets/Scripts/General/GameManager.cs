@@ -5,17 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    
     void Update()
     {
-        #region Input
+        #region Input (For development!!!)
         if (Input.GetButtonDown("Restart"))
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        #endregion
 
-        #region Test (For development)
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();

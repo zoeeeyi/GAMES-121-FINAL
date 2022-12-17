@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58787a238eea7d49a6baecacf6589c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_staticCamera: 0
   m_initiatePosToPlayer: 0
   m_cameraSizeSmoothTime: 0.5
   m_cameraSizeMult: 0.5

@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494073926463777053, guid: 5c7128229106ddd4792be9a922e5a857, type: 3}
       propertyPath: m_Name
-      value: BulletTime
+      value: Bullet Time
       objectReference: {fileID: 0}
     - target: {fileID: 7494073926463777055, guid: 5c7128229106ddd4792be9a922e5a857, type: 3}
       propertyPath: m_targetTimeScale

@@ -19,6 +19,11 @@ public class CardDrop : MonoBehaviour
             {
                 if (CardSystem.instance.AddCard(m_dropBundle)) Destroy(gameObject);
             }
+            else
+            {
+                Instantiate(m_dropBundle, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+            }
         }
     }
 }

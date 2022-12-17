@@ -5,6 +5,7 @@ public class CameraController : MonoBehaviour
 {
     #region General Settings
     [Header("General")]
+    [SerializeField] bool m_staticCamera = false;
     [SerializeField] bool m_initiatePosToPlayer = false;
     [Range(0, 1)]
     [SerializeField] float m_cameraSizeSmoothTime = 0.5f;
@@ -14,6 +15,7 @@ public class CameraController : MonoBehaviour
     float m_cameraStartSize;
     float m_cameraTargetSize; //Should be used according to speed
     float m_cameraSizeSmoothV = 0;
+    Vector3 m_cameraStartPosition;
     Camera m_camera;
     GameManager m_gameManager;
     public static CameraController instance;
@@ -68,6 +70,11 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        if (m_staticCamera)
+        {
+            m_cameraStartPosition = transform.position;
+            return;
+        }
         //Fetch components
         m_camera = GetComponent<Camera>();
         m_playerCollider = m_player.GetComponent<Collider2D>();
@@ -87,6 +94,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+        if (m_staticCamera) return;
         if (!m_cameraInitialized) { return; }
         if (m_playerCollider != null) m_focusArea.Update(m_playerCollider.bounds);
         else return;
@@ -153,25 +161,29 @@ public class CameraController : MonoBehaviour
         #endregion
     }
 
-    public void CameraShake(float _strengthMult = 1)
+    public void CameraShake(float _strengthMult = 1, float _shakeDuration = -1)
     {
+        if (m_staticCamera) transform.position = m_cameraStartPosition;
         StopCoroutine(CameraShakeCoroutine());
-        StartCoroutine(CameraShakeCoroutine(_strengthMult));
+        StartCoroutine(CameraShakeCoroutine(_strengthMult, _shakeDuration));
     }
 
-    IEnumerator CameraShakeCoroutine(float _strengthMult = 1)
+    IEnumerator CameraShakeCoroutine(float _strengthMult = 1, float _shakeDuration = -1)
     {
         //Vector2 _startPos = transform.position;
         float _timer = 0;
 
-        while (_timer < m_shakeDuration)
+        if (_shakeDuration <= 0) _shakeDuration = m_shakeDuration; 
+
+        while (_timer < _shakeDuration)
         {
             _timer += Time.unscaledDeltaTime;
-            float _strengthCurveValue = m_strengthCurve.Evaluate(_timer / m_shakeDuration);
+            float _strengthCurveValue = m_strengthCurve.Evaluate(_timer / _shakeDuration);
             transform.position += (Vector3) Random.insideUnitCircle * _strengthCurveValue * _strengthMult;
             yield return null;
         }
 
+        if (m_staticCamera) transform.position = m_cameraStartPosition;
         //transform.position = _startPos;
     }
 

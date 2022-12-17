@@ -47,3 +47,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Probs 2
+    uniqueID: 1838693685
+    locked: 0
+  - name: Player
+    uniqueID: 2264446271
+    locked: 0
+  - name: Weapon
+    uniqueID: 3228496975
+    locked: 0
+  - name: Probs 1
+    uniqueID: 4189525927
+    locked: 0
+  - name: Ground
+    uniqueID: 3274666173
+    locked: 0
+  - name: World UI
+    uniqueID: 3861231841
+    locked: 0
+  - name: Particles
+    uniqueID: 634074573
+    locked: 0

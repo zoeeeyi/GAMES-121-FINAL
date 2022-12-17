@@ -60,6 +60,7 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
 
     #region State Variables
     [Header("States")]
+    private static bool state_freezeMovement = false;
     private static bool state_grounded;
     private static bool state_onWall;
     private static bool state_crouching;
@@ -137,6 +138,14 @@ public class CharacterMovement : MonoBehaviour, interface_Skills
         PlayerAnimation.instance.Ground(state_grounded);
         #endregion
     }
+
+    #region State Control
+    public void SetFreezeMovement(bool _b)
+    {
+        state_freezeMovement = _b;
+        m_rb.constraints = (_b) ? RigidbodyConstraints2D.FreezeAll : RigidbodyConstraints2D.FreezeRotation;
+    }
+    #endregion
 
     #region Movement Recorder
     struct MovementRecorder

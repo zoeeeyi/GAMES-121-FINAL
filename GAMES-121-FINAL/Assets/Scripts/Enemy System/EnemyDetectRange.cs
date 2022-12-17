@@ -14,12 +14,12 @@ public class EnemyDetectRange : MonoBehaviour
     #region Player in and out of the range
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") m_enemyParent.DetectionSwitch(true);
+        if (collision.tag == "Player") m_enemyParent?.DetectionSwitch(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player") m_enemyParent.DetectionSwitch(false);
+        if (collision.tag == "Player") m_enemyParent?.DetectionSwitch(false);
     }
     #endregion
 }

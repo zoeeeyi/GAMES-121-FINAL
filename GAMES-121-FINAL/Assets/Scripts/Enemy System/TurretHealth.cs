@@ -14,7 +14,8 @@ public class TurretHealth : EnemyHealth
 
     protected override void PreDeathEvent()
     {
-        Instantiate(m_cardDrop, m_cardDropPosition.position, Quaternion.identity);
+        base.PreDeathEvent();
+        if (m_cardDrop != null) Instantiate(m_cardDrop, m_cardDropPosition.position, Quaternion.identity);
         GetComponent<Animator>().SetTrigger("Damaged");
         GetComponent<Collider2D>().enabled = false;
     }

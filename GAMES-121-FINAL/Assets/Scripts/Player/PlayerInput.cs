@@ -52,9 +52,10 @@ public class PlayerInput : MonoBehaviour {
     }
 
     #region Utility Methods
-    public void DisableMovementInput(bool _disable)
+    public void DisableMovementInput(bool _disable, bool _freezeMovement = false)
 	{
 		m_disableMovementInput = _disable;
+		m_characterMovement.SetFreezeMovement(_freezeMovement);
 	}
 
 	public float GetInput()

@@ -15,12 +15,12 @@ public class Dash : SkillParent
     [SerializeField] ForceMode2D m_dashMode;
     [SerializeField] float m_dashTime;
 */
-    PlayerInput m_playerInput;
+    MovementInput m_playerInput;
 
     protected override void Awake()
     {
         base.Awake();
-        m_playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
+        m_playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<MovementInput>();
     }
 
     protected override void Update()

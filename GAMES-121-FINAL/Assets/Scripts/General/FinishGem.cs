@@ -22,7 +22,7 @@ public class FinishGem : MonoBehaviour
         if (collision.tag == "Player" && !m_gotGem)
         {
             m_gotGem = true;
-            PlayerInput _player = collision.GetComponent<PlayerInput>();
+            MovementInput _player = collision.GetComponent<MovementInput>();
             _player.DisableMovementInput(true, true);
             StartCoroutine(UnfreezePlayer(_player));
             m_animator.SetTrigger("Get Gem");
@@ -49,7 +49,7 @@ public class FinishGem : MonoBehaviour
         CameraController.instance.CameraShake(_intensity, 2);
     }
 
-    IEnumerator UnfreezePlayer(PlayerInput _player)
+    IEnumerator UnfreezePlayer(MovementInput _player)
     {
         yield return new WaitForSeconds(m_freezePlayerTime);
         _player.DisableMovementInput(false);

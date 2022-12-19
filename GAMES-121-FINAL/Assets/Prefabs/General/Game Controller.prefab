@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3435232242264128149
+--- !u!1 &754339076824271897
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3435232242264128151}
-  - component: {fileID: 3435232242264128148}
+  - component: {fileID: 754339076824271899}
+  - component: {fileID: 754339076824271896}
   m_Layer: 0
-  m_Name: GameManager
-  m_TagString: GameController
+  m_Name: Game Controller
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3435232242264128151
+--- !u!4 &754339076824271899
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3435232242264128149}
+  m_GameObject: {fileID: 754339076824271897}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,15 +32,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3435232242264128148
+--- !u!114 &754339076824271896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3435232242264128149}
+  m_GameObject: {fileID: 754339076824271897}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3611eeaf4e3635945921902b6763c091, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e2651d53848c1b488891d98c9eebaa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GAME_StartLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_RestartLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_WinLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_FailLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_QuitGame:
+    m_PersistentCalls:
+      m_Calls: []
+  m_awakeState: 0

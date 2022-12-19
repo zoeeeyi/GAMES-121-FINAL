@@ -9,5 +9,8 @@ public class LevelController : ScriptableObject
     public void LoadLevel(string _levelName)
     {
         SceneManager.LoadScene(_levelName);
+
+        //Test Codes:
+        if (_levelName != "Main Menu") GameController.instance.ChangeGameState(GameController.GameState.InGame);
     }
 }

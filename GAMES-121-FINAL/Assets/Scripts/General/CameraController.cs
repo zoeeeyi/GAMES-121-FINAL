@@ -17,14 +17,14 @@ public class CameraController : MonoBehaviour
     float m_cameraSizeSmoothV = 0;
     Vector3 m_cameraStartPosition;
     Camera m_camera;
-    GameManager m_gameManager;
+    GameController m_gameManager;
     public static CameraController instance;
     #endregion
 
     #region Player Settings
     [Header("Player")]
     [SerializeField] GameObject m_player;
-    PlayerInput m_playerInput;
+    MovementInput m_playerInput;
     Collider2D m_playerCollider;
     Rigidbody2D m_playerRb;
     #endregion
@@ -78,9 +78,8 @@ public class CameraController : MonoBehaviour
         //Fetch components
         m_camera = GetComponent<Camera>();
         m_playerCollider = m_player.GetComponent<Collider2D>();
-        m_playerInput = m_player.GetComponent<PlayerInput>();
+        m_playerInput = m_player.GetComponent<MovementInput>();
         m_playerRb = m_player.GetComponent<Rigidbody2D>();
-        m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         //Set focus area
         m_focusArea = new st_FocusArea(m_playerCollider.bounds, m_focusAreaSize, m_initiatePosToPlayer, transform.position);

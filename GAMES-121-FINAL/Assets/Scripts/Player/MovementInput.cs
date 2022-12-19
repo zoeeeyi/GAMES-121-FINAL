@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterMovement))]
-public class PlayerInput : MonoBehaviour {
+public class MovementInput : MonoBehaviour {
 
 	[SerializeField] CharacterMovement m_characterMovement;
 

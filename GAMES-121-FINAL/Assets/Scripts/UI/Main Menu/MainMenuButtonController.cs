@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenuButtonController : MonoBehaviour
 {
-    [SerializeField] ApplicationController m_applicationController;
     [SerializeField] LevelController m_levelController;
     [SerializeField] GameObject[] m_buttons;
     int m_currentButtonIndex = 0;
@@ -20,7 +19,7 @@ public class MainMenuButtonController : MonoBehaviour
     #region Main Buttons
     public void ExitButton()
     {
-        m_applicationController.APP_QuitGame.Invoke();
+        GameController.instance.GameStateMachine.HandleExit(GameStateMachine.InputType.MenuButton);
     }
     #endregion
 

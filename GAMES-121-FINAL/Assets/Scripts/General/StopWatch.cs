@@ -9,7 +9,7 @@ public class StopWatch : MonoBehaviour
     TextMeshProUGUI stopWatchUI;
     float stopWatch;
     double stopWatchRounded;
-    GameManager m_gameManager;
+    GameController m_gameManager;
     //bool m_gameStarted = false;
     bool m_paused = false;
 

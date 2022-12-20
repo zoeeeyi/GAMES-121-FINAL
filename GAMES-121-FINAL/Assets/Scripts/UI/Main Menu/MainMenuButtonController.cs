@@ -1,25 +1,56 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuButtonController : MonoBehaviour
 {
-    [SerializeField] LevelController m_levelController;
+    [SerializeField] GameData m_levelController;
     [SerializeField] GameObject[] m_buttons;
     int m_currentButtonIndex = 0;
 
-    #region FOR DEVELOPMENT!!!
-    public void SpeedRunButton(string _levelName)
+    //Temp, may find better solution
+    [BoxGroup("Continue Button")] [SerializeField] TextMeshProUGUI m_continueButtonText;
+    [BoxGroup("Continue Button")] [SerializeField] Image m_continueButtonImage;
+    [BoxGroup("Continue Button")] [SerializeField] Button m_continueButton;
+
+    private void Start()
     {
-        m_levelController.LoadLevel(_levelName);
+        if (m_levelController.LoadGameData(true))
+        {
+            #region Set Continue Button active
+            m_continueButton.interactable = true;
+            Color _newColor = m_continueButtonImage.color;
+            _newColor.a = 1;
+            m_continueButtonImage.color = _newColor;
+            _newColor = m_continueButtonText.color;
+            _newColor.a = 1;
+            m_continueButtonText.color = _newColor;
+            #endregion
+        }
     }
-    #endregion
 
     #region Main Buttons
+    public void ContinueButton()
+    {
+        NeonRounds.instance.ContinueSavedGame();
+    }
+
+    public void NewSpeedRunButton(string _levelName)
+    {
+        NeonRounds.instance.StartNewGame(NeonRounds.GameMode.Speedrun, _levelName);
+    }
+
+    public void NewFreerunButton(string _levelName)
+    {
+        NeonRounds.instance.StartNewGame(NeonRounds.GameMode.Freerun, _levelName);
+    }
+
     public void ExitButton()
     {
-        GameController.instance.GameStateMachine.HandleExit(GameStateMachine.InputType.MenuButton);
+        NeonRounds.instance.GameStateMachine.HandleExit(GameStateMachine.TriggerType.MenuButton);
     }
     #endregion
 

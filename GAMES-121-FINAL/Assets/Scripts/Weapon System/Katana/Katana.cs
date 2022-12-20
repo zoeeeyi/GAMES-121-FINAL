@@ -47,6 +47,7 @@ public class Katana : WeaponParent
     // Update is called once per frame
     protected override void Update()
     {
+        if (state_paused) return;
         if (Input.GetButtonDown("Fire")) Fire();
         if (Input.GetButtonUp("Fire") && state_attacking) Parry();
     }

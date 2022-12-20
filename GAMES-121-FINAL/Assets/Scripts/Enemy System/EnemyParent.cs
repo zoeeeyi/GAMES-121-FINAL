@@ -18,9 +18,12 @@ public abstract class EnemyParent : MonoBehaviour
     #endregion
 
     #region States Variables
+    protected bool state_paused = false;
     protected bool state_detectionActivated = false;
     protected bool state_seeTarget = false;
     protected bool state_attacking = false;
+    void Pause() { state_paused = true; }
+    void Unpause() { state_paused = false; }
     #endregion
 
     // Start is called before the first frame update
@@ -31,11 +34,18 @@ public abstract class EnemyParent : MonoBehaviour
 
         if (m_aimDevice == null) m_aimDevice = transform;
         #endregion
+
+        #region Event Subscription
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(Pause);
+        #endregion
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (state_paused) return;
+
         #region Look for target
         if (state_detectionActivated)
         {
@@ -58,6 +68,12 @@ public abstract class EnemyParent : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    protected virtual void OnDestroy()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(Pause);
     }
 
     #region Utility Methods

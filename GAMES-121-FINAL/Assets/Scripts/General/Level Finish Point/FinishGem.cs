@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FinishGem : MonoBehaviour
 {
+    [SerializeField] string m_nextLevel;
     [SerializeField] EnemyCounterAgent m_enemyCounterAgent;
     [SerializeField] float m_freezePlayerTime = 2;
     bool m_gotGem = false;
@@ -22,6 +23,7 @@ public class FinishGem : MonoBehaviour
         if (collision.tag == "Player" && !m_gotGem)
         {
             m_gotGem = true;
+            NeonRounds.instance?.WinLevel(m_nextLevel);
             MovementInput _player = collision.GetComponent<MovementInput>();
             _player.DisableMovementInput(true, true);
             StartCoroutine(UnfreezePlayer(_player));
@@ -46,7 +48,7 @@ public class FinishGem : MonoBehaviour
 
     public void ShakeCamera(float _intensity)
     {
-        CameraController.instance.CameraShake(_intensity, 2);
+        CameraController.instance?.CameraShake(_intensity, 2);
     }
 
     IEnumerator UnfreezePlayer(MovementInput _player)

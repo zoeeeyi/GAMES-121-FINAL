@@ -19,6 +19,12 @@ public abstract class SkillParent : MonoBehaviour
     [BoxGroup("SFX")]
     [SerializeField] AudioManager m_audioManager;
 
+    #region State Control
+    protected bool state_paused = false;
+    void Pause() { state_paused = true; }
+    void Unpause() { state_paused = false; }
+    #endregion
+
     protected virtual void Awake()
     {
         m_characterMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterMovement>();
@@ -34,8 +40,15 @@ public abstract class SkillParent : MonoBehaviour
         m_toBeDisabled = false;
     }
 
+    protected virtual void Start()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(Pause);
+    }
+
     protected virtual void Update()
     {
+        if (state_paused) return;
         if (Input.GetButtonDown("Fire") && !m_toBeDisabled)
         {
             if (m_bundledWeapon?.ammoCount > 0 || m_bundledWeapon.isMeleeWeapon) ExecuteSkill();
@@ -43,6 +56,12 @@ public abstract class SkillParent : MonoBehaviour
 
             m_skillExecuting = true;
         }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(Pause);
     }
 
     #region Utility Methods

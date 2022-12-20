@@ -28,11 +28,13 @@ public class PlayerHealth : HealthSystemParent
         GameObject[] _bundles = GameObject.FindGameObjectsWithTag("Bundle");
         foreach (GameObject _bundle in _bundles) Destroy(_bundle);
 
-        //Destroy self
-        Destroy(gameObject);
+        DeathEvent();
     }
 
     protected override void DeathEvent()
     {
+        NeonRounds.instance?.GameStateMachine.HandleRestartLevel(GameStateMachine.TriggerType.Key);
+        //Destroy self
+        Destroy(gameObject);
     }
 }

@@ -11,7 +11,21 @@ public class MovementInput : MonoBehaviour {
 
 	bool m_disableMovementInput = false;
 
+	#region State Control
+	[SerializeField] GameData m_gameData;
+	bool state_paused = true;
+	void PauseMovementInput() { state_paused = true; }
+	void UnpauseMovementInput() { state_paused = false; }
+	#endregion
+
+	private void Start()
+	{
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(UnpauseMovementInput);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(PauseMovementInput);
+	}
+
 	void Update () {
+		if (state_paused) return;
 		if (m_disableMovementInput) return;
 
 		float _inputX = Input.GetAxisRaw("Horizontal");
@@ -49,6 +63,12 @@ public class MovementInput : MonoBehaviour {
 		#region Handle Basic Movement
 		m_characterMovement.ExecuteBasicMove(input_horizontalMove);
         #endregion
+    }
+
+	private void OnDestroy()
+	{
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(UnpauseMovementInput);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(PauseMovementInput);
     }
 
     #region Utility Methods

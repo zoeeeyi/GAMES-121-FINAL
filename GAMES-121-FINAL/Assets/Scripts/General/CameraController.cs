@@ -11,13 +11,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] float m_cameraSizeSmoothTime = 0.5f;
     [SerializeField] float m_cameraSizeMult = 0.5f;
     [SerializeField] float m_cameraMaxSize = 20;
-    bool m_cameraInitialized = false;
     float m_cameraStartSize;
     float m_cameraTargetSize; //Should be used according to speed
     float m_cameraSizeSmoothV = 0;
     Vector3 m_cameraStartPosition;
     Camera m_camera;
-    GameController m_gameManager;
+    NeonRounds m_gameManager;
     public static CameraController instance;
     #endregion
 
@@ -63,6 +62,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] AnimationCurve m_strengthCurve;
     #endregion
 
+    #region State Control
+    bool state_paused = true;
+    void PauseCamera() { state_paused = true; }
+    void UnPauseCamera() { state_paused = false; }
+    #endregion
+
     private void Awake()
     {
         instance = this;
@@ -70,6 +75,9 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(UnPauseCamera);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(PauseCamera);
+
         if (m_staticCamera)
         {
             m_cameraStartPosition = transform.position;
@@ -88,13 +96,12 @@ public class CameraController : MonoBehaviour
         if (m_camera.orthographic) m_cameraStartSize = m_camera.orthographicSize;
         else m_cameraStartSize = m_camera.fieldOfView;
         if (m_initiatePosToPlayer) transform.position = m_player.transform.position + Vector3.back * 10;
-        m_cameraInitialized = true;
     }
 
     void LateUpdate()
     {
+        if (state_paused) return;
         if (m_staticCamera) return;
-        if (!m_cameraInitialized) { return; }
         if (m_playerCollider != null) m_focusArea.Update(m_playerCollider.bounds);
         else return;
 
@@ -160,6 +167,13 @@ public class CameraController : MonoBehaviour
         #endregion
     }
 
+    private void OnDestroy()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(UnPauseCamera);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(PauseCamera);
+    }
+
+    #region Utility Methods
     public void CameraShake(float _strengthMult = 1, float _shakeDuration = -1)
     {
         if (m_staticCamera) transform.position = m_cameraStartPosition;
@@ -186,12 +200,12 @@ public class CameraController : MonoBehaviour
         //transform.position = _startPos;
     }
 
-
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawCube(m_focusArea.center, m_focusArea.size);
     }
+    #endregion
 
     struct st_FocusArea
     {

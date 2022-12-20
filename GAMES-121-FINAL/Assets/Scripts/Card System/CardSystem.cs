@@ -50,7 +50,13 @@ public class CardSystem : MonoBehaviour
     [Header("Animation Settings")]
     [SerializeField] static float m_cardMoveDuration = 0.5f;
     [SerializeField] bool m_centerIfOnlyOneCard = false;
-    #endregion    
+    #endregion
+
+    #region State Controll
+    bool state_paused;
+    void Pause() { state_paused = true; }
+    void Unpause() { state_paused = false; }
+    #endregion
 
     private void Awake()
     {
@@ -64,6 +70,11 @@ public class CardSystem : MonoBehaviour
 
     void Start()
     {
+        #region Event Subscription
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(Pause);
+        #endregion
+
         #region Initiate Card Slots
         totalSlots = m_cards.Length;
         m_cardSlots = new CardSlot[m_cards.Length];
@@ -93,7 +104,8 @@ public class CardSystem : MonoBehaviour
 
     private void Update()
     {
-        
+        if (state_paused) return;
+
         #region Input
         if (Input.GetButtonDown("Next Weapon") || (Input.GetAxis("Mouse ScrollWheel") < -0.1))
         {
@@ -137,6 +149,12 @@ public class CardSystem : MonoBehaviour
         }
 
         #endregion
+    }
+
+    private void OnDestroy()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(Unpause);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(Pause);
     }
 
     #region Card System Methods

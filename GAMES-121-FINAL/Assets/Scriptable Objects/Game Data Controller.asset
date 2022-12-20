@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d5b73f4ac762814a8a2d05ee7fea915, type: 3}
+  m_Name: Game Data Controller
+  m_EditorClassIdentifier: 
+  GAME_InitializeGame:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_StartLevelPrep:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_ContinueLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_RestartLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_PauseLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_WinLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_FailLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  GAME_QuitGame:
+    m_PersistentCalls:
+      m_Calls: []
+  mainMenuName: Main Menu
+  levelList: []
+  totalGems: 3
+  speedRunStartTime: 10

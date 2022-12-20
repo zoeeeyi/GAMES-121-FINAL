@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140e04f772f83cf4eac5d52d71def8b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_nextLevel: 
   m_enemyCounterAgent: {fileID: 11400000, guid: 3449e6a420116534eb5c85358336abed, type: 2}
   m_freezePlayerTime: 2
 --- !u!1 &2208729420980151619
@@ -608,6 +609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2208729421308429559}
   - component: {fileID: 2208729421308429558}
+  - component: {fileID: 2208729421014392647}
   m_Layer: 0
   m_Name: Next Level
   m_TagString: Untagged
@@ -656,6 +658,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 4.460472}
   m_EdgeRadius: 0
+--- !u!114 &2208729421014392647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2208729421308429556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 539310975616bfd429d67c0a2151fbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_nextLevel: Transition Scene
+  m_nextGameState: 3
 --- !u!1 &2208729421482204678
 GameObject:
   m_ObjectHideFlags: 0

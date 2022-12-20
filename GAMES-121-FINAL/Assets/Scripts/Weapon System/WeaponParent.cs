@@ -7,8 +7,11 @@ using UnityEngine.Events;
 
 public abstract class WeaponParent : MonoBehaviour
 {
-    #region State Machine
+    #region State Control
     protected bool state_attacking = false;
+    protected bool state_paused = false;
+    void SetWeaponOffline() { state_paused = true; }
+    void SetWeaponOnline() { state_paused = false; }
     #endregion
 
     #region Card
@@ -62,6 +65,12 @@ public abstract class WeaponParent : MonoBehaviour
         if (m_audioManager != null) m_audioManager.transform.parent = null;
     }
 
+    private void OnEnable()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(SetWeaponOnline);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(SetWeaponOffline);
+    }
+
     protected virtual void Start()
     {
         #region Fetch Components
@@ -76,6 +85,7 @@ public abstract class WeaponParent : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (state_paused) return;
         #region Aimming
         //Mouse
         m_mousePos = m_mainCam.ScreenToWorldPoint(Input.mousePosition);
@@ -102,6 +112,12 @@ public abstract class WeaponParent : MonoBehaviour
         #endregion
     }
     protected abstract void Fire();
+
+    private void OnDisable()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(SetWeaponOnline);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(SetWeaponOffline);
+    }
 
     private void OnDestroy()
     {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 754339076824271899}
   - component: {fileID: 754339076824271896}
+  - component: {fileID: 649420037}
   m_Layer: 0
   m_Name: Game Controller
   m_TagString: Untagged
@@ -44,19 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2651d53848c1b488891d98c9eebaa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GAME_StartLevel:
-    m_PersistentCalls:
-      m_Calls: []
-  GAME_RestartLevel:
-    m_PersistentCalls:
-      m_Calls: []
-  GAME_WinLevel:
-    m_PersistentCalls:
-      m_Calls: []
-  GAME_FailLevel:
-    m_PersistentCalls:
-      m_Calls: []
-  GAME_QuitGame:
-    m_PersistentCalls:
-      m_Calls: []
+  gameData: {fileID: 11400000, guid: f737b5817e7d92543b904493a7bf6b10, type: 2}
+  devMode: 1
+  m_awakeGameMode: 1
   m_awakeState: 0
+--- !u!114 &649420037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754339076824271897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d2673d149f5de4e93813ca4ca92d68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gameData: {fileID: 11400000, guid: f737b5817e7d92543b904493a7bf6b10, type: 2}

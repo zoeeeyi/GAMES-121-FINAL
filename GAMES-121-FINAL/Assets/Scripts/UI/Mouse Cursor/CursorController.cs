@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditorInternal.ReorderableList;
 
 public class CursorController : MonoBehaviour
 {
@@ -12,9 +11,9 @@ public class CursorController : MonoBehaviour
     [HideInInspector] public UnityEvent<CursorAnimationClip> PlayCursorAnimation;
 
     #region Default Cursor
-    private Texture2D m_defaultCursor;
-    private Vector2 m_defaultCursorOffset;
-    private CursorMode m_defaultCursorMode;
+    [SerializeField] private Texture2D m_defaultCursor;
+    [SerializeField] private Vector2 m_defaultCursorOffset;
+    [SerializeField] private CursorMode m_defaultCursorMode;
     #endregion
 
     #region Animator Variables
@@ -32,7 +31,24 @@ public class CursorController : MonoBehaviour
         PlayCursorAnimation.RemoveAllListeners();
         PlayCursorAnimation.AddListener(ExecuteCursorAnimation);
     }
-    
+
+    private void Start()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.AddListener(SetDefaultCursor);
+        NeonRounds.instance.gameData.GAME_PauseLevel.AddListener(SetSystemCursor);
+    }
+
+    private void OnDestroy()
+    {
+        NeonRounds.instance.gameData.GAME_ContinueLevel.RemoveListener(SetDefaultCursor);
+        NeonRounds.instance.gameData.GAME_PauseLevel.RemoveListener(SetSystemCursor);
+    }
+
+    void SetSystemCursor()
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+    }
+
     private void SetDefaultCursor()
     {
         Cursor.SetCursor(m_defaultCursor, m_defaultCursorOffset, m_defaultCursorMode);

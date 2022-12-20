@@ -45,6 +45,7 @@ public abstract class GameStateMachine
     protected virtual void ExecuteQuitToMainMenu()
     {
         Time.timeScale = 1;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         SceneManager.LoadScene(NeonRounds.instance.gameData.mainMenuName);
         NeonRounds.instance.ChangeGameState(NeonRounds.GameState.InMainMenu);
     }
@@ -166,17 +167,25 @@ public class InTransitionMenu : GameStateMachine
 {
     public override void HandleExit(TriggerType _inputType)
     {
-        throw new System.NotImplementedException();
+        switch (_inputType)
+        {
+            case TriggerType.Key:
+                return;
+
+            case TriggerType.MenuButton:
+                ExecuteQuitToMainMenu();
+                break;
+        }
     }
 
     public override void HandleInitializeState()
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     public override void HandleRestartLevel(TriggerType _inputType)
     {
-        throw new System.NotImplementedException();
+        return;
     }
 }
 
@@ -184,7 +193,7 @@ public class InMainMenu : GameStateMachine
 {
     public override void HandleInitializeState()
     {
-        //To be implemented
+        ExecuteContinueLevel();
         return;
     }
 
@@ -192,7 +201,26 @@ public class InMainMenu : GameStateMachine
 
     public override void HandleExit(TriggerType _inputType)
     {
-        //To be implemented
-        return;
+        switch (_inputType)
+        {
+            case TriggerType.Key:
+                ExecuteQuitGame();
+                break;
+
+            case TriggerType.MenuButton:
+                ExecuteQuitGame();
+                break;
+        }
+    }
+
+    protected override void ExecuteContinueLevel()
+    {
+        Time.timeScale = 1;
+        NeonRounds.instance.DelayedInvoke(NeonRounds.instance.gameData.GAME_ContinueLevel, 0.1f);
+    }
+
+    void ExecuteQuitGame()
+    {
+        NeonRounds.instance.QuitGame();
     }
 }

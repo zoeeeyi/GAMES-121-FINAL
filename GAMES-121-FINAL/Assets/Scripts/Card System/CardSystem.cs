@@ -119,7 +119,7 @@ public class CardSystem : MonoBehaviour
         #endregion
 
         #region More Inputs (These are for testing purposes)
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCard(1);
+/*        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCard(1);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCard(2);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCard(3);
 
@@ -147,7 +147,7 @@ public class CardSystem : MonoBehaviour
         {
             m_cards[2].DeleteCard();
         }
-
+*/
         #endregion
     }
 

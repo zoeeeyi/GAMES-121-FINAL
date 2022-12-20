@@ -14,7 +14,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: 83e286cf309c73e43adf69878a745828
+  - enabled: 1
+    path: Assets/Scenes/Level 2.unity
+    guid: d0517f4122a9fcf4a982f5900f3cecd0
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: a4415d53c31413948a10b0529dc3655e
+  - enabled: 1
+    path: Assets/Scenes/Transition Scene.unity
+    guid: 9da93840f54c635428400acdff8dae98
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: a4dcb8da9c63cc74db05b05c89cb94d8, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: d40864e73c2eb424b8c34f35b2ce1844, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: d329dda6296cfd54088270ff97dafee5, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 404c4c858197b084bbc48a86912f7a2c, type: 2}

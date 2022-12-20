@@ -23,7 +23,12 @@ public class FinishGem : MonoBehaviour
         if (collision.tag == "Player" && !m_gotGem)
         {
             m_gotGem = true;
-            NeonRounds.instance?.WinLevel(m_nextLevel);
+            if (NeonRounds.instance != null)
+            {
+                int _nextLevelIndex = NeonRounds.instance.gameData.levelDic[NeonRounds.instance.gameData.currentLevel] + 1;
+                if (_nextLevelIndex >= NeonRounds.instance.gameData.levelList.Length) _nextLevelIndex--;
+                NeonRounds.instance?.WinLevel(NeonRounds.instance.gameData.levelList[_nextLevelIndex]);
+            }
             MovementInput _player = collision.GetComponent<MovementInput>();
             _player.DisableMovementInput(true, true);
             StartCoroutine(UnfreezePlayer(_player));

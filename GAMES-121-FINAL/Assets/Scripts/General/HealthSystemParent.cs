@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class HealthSystemParent : MonoBehaviour
 {
     [SerializeField] bool m_immortal;
+    public bool immortal { set { m_immortal = value; } }
     [HideIf("m_immortal", true)]
     [SerializeField] protected int m_totalHealth;
     protected int m_currentHealth;

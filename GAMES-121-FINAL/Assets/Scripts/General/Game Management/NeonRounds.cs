@@ -51,6 +51,7 @@ public class NeonRounds : MonoBehaviour
     GameStateMachine GSM_inLoseMenu = new InLoseMenu();
     GameStateMachine GSM_inPauseMenu = new InPauseMenu();
 
+
     public void ChangeGameState(GameState _state)
     {
         currentGameState = _state;
@@ -96,6 +97,7 @@ public class NeonRounds : MonoBehaviour
             gameData.SetGameModeAndLevel(m_awakeGameMode, SceneManager.GetActiveScene().name);
             if (m_devMode) gameData.SaveGameData(true);
             if (m_deleteSaveData) gameData.DeleteGameData();
+            gameData.LevelDirectoryCreator();
         }
         else
         {
@@ -115,8 +117,6 @@ public class NeonRounds : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T)) Time.timeScale = 1;
-
         #region Handle Input
         if (Input.GetButtonDown("Restart Level"))
         {
@@ -158,6 +158,7 @@ public class NeonRounds : MonoBehaviour
     public void StartNewGame(GameMode _gameMode, string _level = null)
     {
         if (_level == null) _level = gameData.levelList[0];
+        gameData.LoadGameData();
         gameData.SetGameModeAndLevel(_gameMode, _level);
         gameData.SaveGameData(true);
         LoadLevel();
@@ -169,9 +170,14 @@ public class NeonRounds : MonoBehaviour
         LoadLevel();
     }
 
-    void QuitGame()
+    public void QuitGame()
     {
         gameData.GAME_StartLevelPrep.RemoveAllListeners();
+        gameData.GAME_ContinueLevel.RemoveAllListeners();
+        gameData.GAME_RestartLevel.RemoveAllListeners();
+        gameData.GAME_PauseLevel.RemoveAllListeners();
+        gameData.GAME_WinLevel.RemoveAllListeners();
+        gameData.GAME_FailLevel.RemoveAllListeners();
         gameData.GAME_QuitGame.RemoveAllListeners();
         Application.Quit();
     }
@@ -181,20 +187,26 @@ public class NeonRounds : MonoBehaviour
     public void WinLevel(string _nextLevelName)
     {
         gameData.GAME_WinLevel.Invoke();
+        gameData.SetGemCollected(gameData.gemCollected + 1);
         switch (gameData.currentGameMode)
         {
             case GameMode.Speedrun:
                 gameData.SetRemainingTime(Clock.instance.currentTime);
                 gameData.TrySetSpeedRunBestTime(gameData.currentSessionRemainingTime, gameData.currentLevel);
+                //If this is the ending level, we need to record best time for the whole game
+                if (gameData.gemCollected == gameData.totalGems)
+                    gameData.TrySetSpeedRunBestTime(gameData.currentSessionRemainingTime);
                 break;
 
             case GameMode.Freerun:
                 float _thisRunTime = Clock.instance.currentTime - gameData.currentSessionElapsedTime;
                 gameData.SetElapsedTime(Clock.instance.currentTime);
                 gameData.TrySetFreeRunBestTime(_thisRunTime, gameData.currentLevel);
+                //If this is the ending level, we need to record best time for the whole game
+                if (gameData.gemCollected == gameData.totalGems)
+                    gameData.TrySetFreeRunBestTime(gameData.currentSessionElapsedTime);
                 break;
         }
-        gameData.SetGemCollected(gameData.gemCollected + 1);
         gameData.SetGameModeAndLevel(gameData.currentGameMode, _nextLevelName);
         gameData.SaveGameData();
     }

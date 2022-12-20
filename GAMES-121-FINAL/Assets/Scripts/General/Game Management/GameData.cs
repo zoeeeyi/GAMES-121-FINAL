@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using UnityEngine.Events;
+using static UnityEngine.LightProbeProxyVolume;
 
 [CreateAssetMenu(fileName = "Game Data Controller", menuName = "Scriptable Objects/Game Data Controller")]
 public class GameData : ScriptableObject
 {
     #region Events
     //These events should do the same thing when called, regardless of current game state
-    [HideInInspector] public UnityEvent GAME_InitializeGame;
+    //[HideInInspector] public UnityEvent GAME_InitializeGame;
     [HideInInspector] public UnityEvent GAME_StartLevelPrep;
     [HideInInspector] public UnityEvent GAME_ContinueLevel;
     [HideInInspector] public UnityEvent GAME_RestartLevel;
@@ -26,6 +27,7 @@ public class GameData : ScriptableObject
     [Header("Level Settings")]
     public string mainMenuName = "Main Menu";
     public string[] levelList;
+    public Dictionary<string, int> levelDic { get; private set; }
     public NeonRounds.GameMode currentGameMode { get; private set; }
     public string currentLevel { get; private set; }
     public void SetGameModeAndLevel(NeonRounds.GameMode _mode, string _level)
@@ -66,8 +68,8 @@ public class GameData : ScriptableObject
     public void TrySetFreeRunBestTime(float _time, string _levelName = null)
     {
         if (_levelName == null) _levelName = "Whole Game";
-        if (!speedRunBestTime.TryGetValue(_levelName, out float _pb)) speedRunBestTime.Add(_levelName, _time);
-        else if (_time < _pb) speedRunBestTime[_levelName] = _time;
+        if (!freerunBestTime.TryGetValue(_levelName, out float _pb)) freerunBestTime.Add(_levelName, _time);
+        else if (_time < _pb) freerunBestTime[_levelName] = _time;
     }
 
     #endregion
@@ -84,13 +86,14 @@ public class GameData : ScriptableObject
     {
         //prepare save file
         SaveFile _saveFile;
-        if (_newSave) _saveFile = LogGameData(true);
+        if (_newSave)_saveFile = LogGameData(true);
         else _saveFile = LogGameData(false);
 
         //write save file to drive
         string _filePath = Path.Combine(Application.persistentDataPath, "NeonRoundsSave.json");
-        string _jsonData = JsonUtility.ToJson(_saveFile);
-        File.WriteAllText(_filePath, _jsonData);
+        Sirenix.Serialization.DataFormat _df = Sirenix.Serialization.DataFormat.JSON;
+        byte[] bytes = SerializationUtility.SerializeValue(_saveFile, _df);
+        File.WriteAllBytes(_filePath, bytes);
     }
 
     //For now, Load Game Data should only happen when there's a "Continue" Button
@@ -100,8 +103,10 @@ public class GameData : ScriptableObject
         if (File.Exists(_filePath))
         {
             if (_tryLoad) return true;
-            string _jsonData = File.ReadAllText(_filePath);
-            SaveFile _saveFile = JsonUtility.FromJson<SaveFile>(_jsonData);
+            //string _jsonData = File.ReadAllText(_filePath);
+            byte[] bytes = File.ReadAllBytes(_filePath);
+            SaveFile _saveFile = SerializationUtility.DeserializeValue<SaveFile>(bytes, Sirenix.Serialization.DataFormat.JSON);
+            //SaveFile _saveFile = JsonUtility.FromJson<SaveFile>(_jsonData);
             ExtractGameData(_saveFile);
             return true;
         } else
@@ -122,8 +127,8 @@ public class GameData : ScriptableObject
         _saveFile.SAVE_currentGameMode = currentGameMode;
         _saveFile.SAVE_currentLevel = currentLevel;
         _saveFile.SAVE_gemCollected = (_createNew) ? (gemCollected = 0) : gemCollected;
-        _saveFile.SAVE_speedrunBestTime = speedRunBestTime;
-        _saveFile.SAVE_freerunBestTime = freerunBestTime;
+        _saveFile.SAVE_speedrunBestTime = (speedRunBestTime == null) ? (speedRunBestTime = new Dictionary<string, float>()) : speedRunBestTime;
+        _saveFile.SAVE_freerunBestTime = (freerunBestTime == null) ? (freerunBestTime = new Dictionary<string, float>()) : freerunBestTime;
         switch (currentGameMode)
         {
             case NeonRounds.GameMode.Speedrun:
@@ -170,6 +175,15 @@ public class GameData : ScriptableObject
         //Test Codes:
         //if (_levelName != "Main Menu") NeonRounds.instance.ChangeGameState(NeonRounds.GameState.InGame);
     }
+
+    public void LevelDirectoryCreator()
+    {
+        levelDic = new Dictionary<string, int>();
+        for (int i = 0; i < levelList.Length; i++)
+        {
+            levelDic.Add(levelList[i], i);
+        }
+    }
     #endregion
 }
 
@@ -179,7 +193,7 @@ class SaveFile
     public NeonRounds.GameMode SAVE_currentGameMode;
     public string SAVE_currentLevel;
     public float SAVE_currentTime;
-    public Dictionary<string, float> SAVE_speedrunBestTime;
+    public Dictionary<string,float> SAVE_speedrunBestTime;
     public Dictionary<string, float> SAVE_freerunBestTime;
     public int SAVE_gemCollected;
 }
